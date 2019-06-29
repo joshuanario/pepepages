@@ -1,0 +1,21 @@
+.Rolling-stripes {
+    -webkit-filter: blur(10px); 
+    filter: blur(10px); 
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 0, 0, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 0, 0, 0.5) 50%, rgba(255, 0, 0, 0.5) 75%, transparent 75%, transparent, rgba(255, 0, 0, 0.5));
+    background-image: -o-linear-gradient(45deg, rgba(255, 0, 0, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 0, 0, 0.5) 50%, rgba(255, 0, 0, 0.5) 75%, transparent 75%, transparent, rgba(255, 0, 0, 0.5));
+    background-image: linear-gradient(45deg, rgba(255, 0, 0, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 0, 0, 0.5) 50%, rgba(255, 0, 0, 0.5) 75%, transparent 75%, transparent, rgba(255, 0, 0, 0.5));
+    -webkit-animation: gradientrollanim 1s linear infinite;	/*Chrome, Safari, Opera*/
+    animation: gradientrollanim 1s linear infinite;		/*IE, Firefox*/
+  }
+  
+  @-webkit-keyframes gradientrollanim	/*Chrome, Safari, Opera */
+  {
+    from  { background-position: 4000px 0; }
+    to    { background-position: 0 0; }
+  }
+  @keyframes gradientrollanim	/*IE, Firefox*/
+  {
+    from  { background-position: 4000px 0; }
+    to    { background-position: 0 0; }
+  }
+  

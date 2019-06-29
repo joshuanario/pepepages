@@ -1,0 +1,17 @@
+.Fading {
+  -webkit-animation: fadinganim 2s ease infinite;	/*Chrome, Safari, Opera*/
+  animation: fadinganim 2s ease infinite;		/*IE, Firefox*/
+}
+
+@-webkit-keyframes fadinganim	/*Chrome, Safari, Opera */
+{
+    from {opacity: 1;}
+    50%  {opacity: 0.25;} 
+    to {opacity: 0.95;} 
+}
+@keyframes fadinganim	/*IE, Firefox*/
+{
+    from {opacity: 1;}
+    50%  {opacity: 0.25;} 
+    to {opacity: 0.95;} 
+}
