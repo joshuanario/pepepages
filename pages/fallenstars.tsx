@@ -1,16 +1,16 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Amnesia from '../components/Amnesia'
+import FallenStars from '../components/FallenStars'
 
 // const AmnesiaPage: NextPage = ({ photos }) => {
 const AmnesiaPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Amnesia | joshuanario.com</title>
+        <title>crystalized hearts of fallen stars | joshuanario.com</title>
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
-      <Amnesia />
+      <FallenStars />
     </>
 
   )
