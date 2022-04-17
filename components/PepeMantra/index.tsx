@@ -1,13 +1,7 @@
-import React from 'react';
+import React from 'react'
 import NoisyScreen from './NoisyScreen'
 import PP from './Dichotomy'
-import './App.css';
-import './Fading.css';
-import './Slip-slide.css';
-import './Saturating.css';
-import './See-saw.css';
-import './Springy.css';
-import './Inflate.css';
+import styles from '../../styles/Home.module.css'
 
 
 let up = Math.random() >= 0.4
@@ -50,20 +44,19 @@ export default class App extends React.Component<object, State> {
     const { isNoisy } = this.state
 
     let content = isNoisy ? <NoisyScreen/> : ( 
-      <h1 className="App-text">
-        <PP firstText={peace} secondText={poise} animatingClass="Fading" mountingClass="Slip-slide" ></PP>&nbsp;
-        <PP firstText={passion} secondText={power} animatingClass="Saturating" mountingClass="See-saw" ></PP>&nbsp;
-        <PP firstText={piquancy} secondText={potential} animatingClass="Springy" mountingClass="Inflate" ></PP>&nbsp;
+      <h1 className={styles["App-text"]}>
+        <PP firstText={peace} secondText={poise} animatingClass={styles["Fading"]} mountingClass={styles["Slip-slide"]} ></PP>&nbsp;
+        <PP firstText={passion} secondText={power} animatingClass={styles["Saturating"]} mountingClass={styles["See-saw"]} ></PP>&nbsp;
+        <PP firstText={piquancy} secondText={potential} animatingClass={styles["Springy"]} mountingClass={styles["Inflate"]} ></PP>&nbsp;
       </h1>
     )
 
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className={styles["App"]}>
+        <header className={styles["App-header"]}>
           { content }
         </header>
       </div>
-    );
+    )
   }
 }
-

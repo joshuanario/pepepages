@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 type State = {
     isMounting: boolean,
@@ -77,7 +77,7 @@ export default class Dichotomy extends React.Component<Props, State> {
 
         return (
             <span className={className} onMouseEnter={this.onEnter} onTouchEnd={this.onTouch}>{this.state.text}</span>
-        );
+        )
     }
 }
   

@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  background: url(BloomFestivalpixelclouds.web.jpg) no-repeat center center fixed; 
+  background: url(/BloomFestivalpixelclouds.web.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

@@ -1,5 +1,5 @@
-import React from 'react';
-import './Rolling-stripes.css';
+import React from 'react'
+import styles from '../../styles/Home.module.css'
 
 const NoisyScreen: React.FC = () => {
   return (
@@ -12,8 +12,8 @@ const NoisyScreen: React.FC = () => {
           top: 0,
           left: 0
         }
-      } className="Rolling-stripes"/>
-  );
+      } className={styles["Rolling-stripes"]}/>
+  )
 }
 
-export default NoisyScreen;
+export default NoisyScreen
