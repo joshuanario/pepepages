@@ -21,13 +21,16 @@ const randomPic = (curr: string, photos: string[]) : string => {
   } while(ret === curr)
   return ret
 }
-
+let cycleTimeout:NodeJS.Timeout
 const FallenStars: React.FC<MyProps> = (props: MyProps) => {
   const { photos } = props
   const [curr, setCurr] = useState(randomPic('', photos))
   const cyclePics = () => {
+    if (cycleTimeout) {
+      clearTimeout(cycleTimeout)
+    }
     setCurr(randomPic(curr, photos))
-    setTimeout(
+    cycleTimeout = setTimeout(
       cyclePics,
       10000
     )
@@ -39,10 +42,10 @@ const FallenStars: React.FC<MyProps> = (props: MyProps) => {
       height: '100vh'
     }} 
     onClick={ e => {
-      setCurr(randomPic(curr, photos))
+      cyclePics()
     }} 
     onTouchMove={e => {
-      setCurr(randomPic(curr, photos))
+      cyclePics()
     }}
   >
     <img src={curr}
