@@ -21,7 +21,7 @@ type State = {
   isNoisy: boolean
 }
 
-export default class App extends React.Component<object, State> {
+export default class PepeMantra extends React.Component<object, State> {
   constructor(prop: object){
     super(prop)
     this.state = {
