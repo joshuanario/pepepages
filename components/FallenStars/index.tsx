@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 type MyProps = {
   photos: string[]
@@ -25,7 +25,14 @@ const randomPic = (curr: string, photos: string[]) : string => {
 const FallenStars: React.FC<MyProps> = (props: MyProps) => {
   const { photos } = props
   const [curr, setCurr] = useState(randomPic('', photos))
-
+  const cyclePics = () => {
+    setCurr(randomPic(curr, photos))
+    setTimeout(
+      cyclePics,
+      10000
+    )
+  }
+  useEffect(cyclePics, [])
   return <div
     style={{
       width: '100vw',
