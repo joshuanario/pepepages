@@ -5,6 +5,11 @@ type MyProps = {
 }
 
 const getRandomInt = (max: number) => {
+  if (typeof window !== 'undefined' && window?.crypto?.getRandomValues) {
+    const buf = new Uint8Array(1)
+    window.crypto.getRandomValues(buf)
+    return buf[0] % max
+  }
   return Math.floor(Math.random() * max)
 }
 
