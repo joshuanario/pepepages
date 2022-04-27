@@ -18,7 +18,7 @@
   margin: 0 auto;
   overflow: auto;
 }
-@media screen and (max-width: 816px){
+@media screen and (max-width: 1632px){
   #wrapper {
     width: 100%;
     max-width: 816px;
