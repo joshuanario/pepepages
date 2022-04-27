@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import dynamic from 'next/dynamic'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import FallenStars from '../components/FallenStars'
@@ -43,8 +42,8 @@ export async function getStaticProps() {
   }
   let photos: string[]
   photos = []
-  const pagesDirectory = path.resolve(process.cwd(), 'public', 'fallenstars')
-  fromDir(pagesDirectory, /\.jpg|\.jpeg$/, (filename: string) => {
+  const dir = path.resolve(process.cwd(), 'public', 'fallenstars')
+  fromDir(dir, /\.jpg|\.jpeg$/, (filename: string) => {
     const trim = filename.replace(process.cwd() + path.sep + 'public', '')
     const img = trim.replace(path.sep, '/')
     photos.push(img)
