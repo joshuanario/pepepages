@@ -1,0 +1,36 @@
+#top {
+  position: relative;
+  float: right;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#algoArt {
+  position: relative;
+  display: inline;
+  float: left;
+  width: 102px; /* 51px is US Passport Dimension */
+  max-width: 102px;
+  margin: 0;
+  padding: 0;
+}
+
+#intro {
+  position: relative;
+  display: inline;
+  float: right;
+  width: calc(98% - 102px);
+  margin: 0;
+  padding: 0 1%;
+}
+
+
+
+#content {
+  position: relative;
+  width: 100%;
+  max-width: 816px;
+  margin: 1%;
+  padding: 0;
+}
