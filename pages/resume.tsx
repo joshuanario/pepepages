@@ -32,17 +32,10 @@ const ResumePage: NextPage<MyProps> = ({ resume, serversideArt }: MyProps ) => {
   )
 }
 
-// Convert a hex string to a byte array
-function hexToBytes(hex: string) {
-  for (var bytes = [], c = 0; c < hex.length; c += 2)
-      bytes.push(parseInt(hex.substr(c, 2), 16));
-  return bytes;
-}
-
-const colorBand32 = (hex: string) : string[] => {
+const colorBand8 = (hex: string) : string[] => {
   let ret = []
   for(let i=0; i < hex.length; i++) {
-    ret.push('#' + hex.substring(i, 2))
+    ret.push('#' + hex.substring(i, 8))
   }
   return ret
 }
@@ -66,14 +59,11 @@ export async function getStaticProps() {
   context.globalCompositeOperation='difference'
   context.drawImage(profileImage, l, 0, l, l)
   context.drawImage(profileImage, 0, l, l, l)
-  const bands = colorBand32(profilePicHash)
-  for(let i=0; i < 16; i++) {
+  const bands = colorBand8(profilePicHash)
+  for(let i=0; i < 8; i++) {
     context.fillStyle = bands[i]
-    const g = l/16
+    const g = Math.round(l/8)
     let w = g
-    if (i > 13) {
-      w = 2 * g
-    }
     context.fillRect(l+i*g, 0, g, 2*l)
   }
   return {
