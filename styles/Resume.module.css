@@ -14,8 +14,9 @@
 
 #wrapper {
   width: 50%;
-  min-width: 816px;
+  height: 100%;
   margin: 0 auto;
+  overflow: auto;
 }
 @media screen and (max-width: 816px){
   #wrapper {
