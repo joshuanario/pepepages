@@ -18,7 +18,7 @@ const ResumePage: NextPage<MyProps> = ({ resume, serversideArt }: MyProps ) => {
   <p>Durham, NC<p>
   <p>Computer technology professional</p>
   <h2>Interests</h2>
-  <p>dogs, lots of food, watching birds, going to the beach, camping in the woods, and algorthmic art like the one seen next to this text block</p>
+  <p>dogs, lots of food, watching birds, going to the beach, camping in the woods, and algorthmic art like the one seen next to this page</p>
   `
   return (
     <>
