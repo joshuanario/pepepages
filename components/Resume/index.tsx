@@ -11,22 +11,10 @@ type MyProps = {
 const Resume: React.FC<MyProps> = (props: MyProps) => {
   const { resume, intro, serversideArt } = props
   return <div
-    style={{
-      width: '100vw',
-      height: '100%',
-      backgroundColor: 'black',
-      color: 'white',
-      padding: '1em 0',
-      margin: '0',
-      fontFamily: "'Tinos', serif",
-    }}
+    id={styles.container}
   >
     <div 
-      style={{
-        width: '50%',
-        minWidth: '816px',
-        margin: '0 auto',
-      }}
+      id={styles.wrapper}
     >
       <div
         id={styles.top}
