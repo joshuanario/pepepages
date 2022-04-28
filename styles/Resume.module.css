@@ -51,37 +51,19 @@
 
 #algoArt {
   position: relative;
-  display: inline;
-  float: left;
+  display: block;
   width: 102px; /* 51px is US Passport Dimension */
   max-width: 102px;
   margin: 0;
   padding: 0;
 }
-@media screen and (max-width: 816px){
-  #algoArt {
-    display: block;
-    float: unset;
-  }
-}
 
 #intro {
   position: relative;
-  display: inline;
-  float: right;
+  display: block;
   width: calc(98% - 102px);
   margin: 0;
   padding: 0 1%;
-}
-@media screen and (max-width: 816px){
-  #intro {
-    display: block;
-    float: unset;
-    width: 100%;
-    max-width: 816px;
-    margin: 1%;
-    padding: 0;
-  }
 }
 
 #content {

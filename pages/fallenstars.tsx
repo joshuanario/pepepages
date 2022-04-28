@@ -21,7 +21,6 @@ const FallenStarsPage: NextPage<MyProps> = ({ photos }: MyProps ) => {
   )
 }
 
-
 // This function gets called at build time
 export async function getStaticProps() {
   const fromDir = (startPath: string, filter: RegExp, cb: Function) => {
@@ -54,6 +53,5 @@ export async function getStaticProps() {
     },
   }
 }
-
 
 export default FallenStarsPage
