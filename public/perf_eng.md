@@ -1,13 +1,8 @@
 # Performance engineering web applications with load that is growing at a polynomial rate
-Typically, a computer system's load grows as more user gain access to the system.  Eventually, a popular computer system will gain users at a fast rate (e.g. doubling every year) and will start to compound performance engineering issues.  The issues manifest itself as slower timing metrics (time-on-tasks, execution time, response time, first contentful paint, etc.), lower success rates in server requests and/or user interactions, and frequent failure modes.  In this lifecycle phase of the computer system, performance engineering must also scale up with the load.  I propose the following benchmark analyses:
-  1. Web Server Benchmark
-  1. Web Server Soak Test
-  1. Webpage Benchmark
-  1. User Interaction Benchmark
-If there are observation and telemetry tools setup in production, there should be enough information on the operating range and states (warm vs cold) of the computer system.
+Typically, a computer system's load grows as more user gain access to the system.  Eventually, a popular computer system will gain users at a fast rate (e.g. doubling every year) and will start to compound performance engineering issues.  The issues manifest itself as slower timing metrics (time-on-tasks, execution time, response time, first contentful paint, etc.), lower success rates in server requests and/or user interactions, and frequent failure modes.  In this lifecycle phase of the computer system, performance engineering must also scale up with the load.  In my experience, most product owners and technical leaders don't know how to formulate performance objectives for their computer systems.  The simplest benchmark I can think of is to maintain the current benchmark (timing metrics and success rates).  If there are observation and telemetry tools setup in production, there should be enough information on the operating range and states ("warm" states, "cold" states, data volume, etc.) of the computer system.  A benchmark's load generator infrastrucure should have "variabilization" that will explore the different possible state inputs for the load.  Also beware of reworking the computer system as they may introduce unavoidable performance degradations known as "performance deficits" that will require the vertical scaling or horizontal scaling of infrastructure to "payback the debt" in performance.  In addition, always check for memory leaks and CPU over-utilizations (and under-utilizations) with a soak test.
 
 # Web Server Benchmark
-Measures response time and success rate
+Measures response time in milliseconds and success rate in percent.
 
 ## How-To
 
@@ -26,30 +21,38 @@ flowchart TD
     A[Start] --> B[Query measurements]
     B --> db
     db --> B
-    B --> C[Compute response time characteristic curve]
-    B --> D[Compute success rates characteristic curve]
+    B --> C[Compute response time characteristic curves]
+    B --> D[Compute success rate characteristic curve]
     D --> sp
     sp --> D
     C --> E[Render and save results]
     D --> E
+    E --> store
+    store[(Benchmarks)]
 ```
 Figure: Computer program for web server benchmark results rendering
-1.  First, build the load generator infrastructure as illustrated.  Ensure that the request factory has high throughput and low latency.  Ensure that the pulsewave generator has fast CPU, fast disk-writes, large memory, and high throughput.  More importantly, ensure the measured load generation is not off by no more than 50% from the rated load.  Also, the load generator only needs to report to the waveform monitor once every second for real-time viewing.  Lastly, the measurements are recorded (if configured) during load generation into the fast-writing disks, and then at the end of the load generation, the load generator stores all the measurements into the measurement store.  Make sure to have enough disk space.  The rule of thumb for disk space is: $$rated\_load * load\_test\_duration = disk\_space$$
-Also, the disk should be fast within 3,000 IOPS or a little over to the rated load.
+1.  First, build the load generator infrastructure as illustrated.  Ensure that the request factory has high throughput, low latency, and more importantly variabilization that mirrors requests as seens in SIP  (system-in-production).  Ensure that the pulsewave generator has fast CPU, fast disk-writes, large memory, and high throughput.  More importantly, ensure the measured load generation is not off by no more than 50% from the rated load.  Also, the load generator only needs to report to the waveform monitor once every second for real-time viewing.  Lastly, the measurements are recorded (if configured) during load generation into the fast-writing disks, and then at the end of the load generation, the load generator stores all the measurements into the measurement store.  Make sure to have enough disk space.  The rule of thumb for disk space is: $$rated\_load * load\_test\_duration = disk\_space$$
+Also, the disk should be fast within 3,000 IOPS or a little over the rated load.
 1.  Second, create the computer program for the web server benchmark results rendering.  The computer program must produce the following results:
     
     - Response Time Characteristic Curve for each desired percintiles in the form of $$y = mx + b$$ where $x$ is the load, and $y$ is the response time percentile.  If the $R^2$ is less thant 0.6, discard the results and rerun a new benchmark.
     - Success Rate Characteristice Curve in the form of $$ y =
      \left\{
         \begin{array}{ll}
-            f & x>x_{Maximum Safe Load} \\
+            f - e^{gx-h} & x>x_{Maximum Safe Load} \\
             1.0 & x<=x_{Maximum Safe Load} \\
         \end{array} 
-    \right.  $$ where $f < 1.0$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This line of best fit can be computed with linear regression.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the pass band is not continually at 100% success rate, discard the results and rerun the benchmark.
-1.  Operate the load generator to apply 1-minute pulsewave towards the SUT (system-under-test) for at least 100 attack points throughout the operating range of the system (Lookup "one-in-ten" rule for predictive models).  However, before the pulsewaves are applied, apply a "warm-up load" to the SUT.  This load varies depending on the computer system as observed with SIP (system-in-production).  When in doubt, use a warm-up load of the highest rated load for a duration of 1 minute.  With that, there must be a cooldown duration between each pulsewave.  When in doubt, use a cooldown duration of 1 minute.
+    \right.  $$ where $f > 1.0$, $g > 0$, $h > x_{Maximum Safe Load}$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the response curve in the pass band is not continous with a 100% success rate, keep the results and rerun the benchmark until there are datapoints that show a continuous response curve in the passband.  If after three reruns and there is still no clear passband, stop running more benchmarks and assume that the SUT has no passband.  If there are less than 100 datapoints within the passband, run the benchmarks again and again until there are over 100 datapoints within the passband.
+1.  Operate the load generator to apply 1-minute pulsewave towards the SUT (system-under-test) for at least 100 attack points throughout the operating range of the system (Lookup "one-in-ten" rule for predictive models).  However, before the pulsewaves are applied, apply a "warm-up load" to the SUT.  This load varies depending on the computer system as observed with SIP.  When in doubt, use a warm-up load of the highest rated load for a duration of 1 minute.  With that, there must be a cooldown duration between each pulsewave.  When in doubt, use a cooldown duration of 1 minute.
 Make sure that the load applied is similar to the load applied to the SIP.  If the load in SIP hits multiple http endpoints simultaneously, then the load generator must hit multiple http endpoints simultaneaously.
 1.  When the load generation is over and the measurements are collected, run the benchmark analysis computer program.
 
+## Benchmark Comparison
+Compute the residuals between the two web server benchmarks (See "residuals computation" below).
+### Compare Response Time Benchmark
+Use the equation $y=mx+b$ to get the fitted values (aka predicted values).  Get the residuals between the observed values and the fitted values.  Determine the performance difference based on the expected value of the residuals.
+### Compare Success Rate Benchmark
+Use the equation $y = 1.0$ to get the fitted values for $x<=x_{Maximum Safe Load}$.  Get the residuals between the observed values and the fitted values.  Determine the performance difference based on the expected value of the residuals.  Note that success rate characteristic outside of the passband is uncertain and is therefore considered to have low success rate.  The main thing to be concerned about in the success rate characteristic curve is that the $x_{Maximum Safe Load}$ is way beyond the operating range of the web server.
 
 
 # Web Server Soak Test
@@ -61,5 +64,21 @@ Make sure that the load applied is similar to the load applied to the SIP.  If t
 # User Interaction Benchmark
 //todo 
 
+
+# Residual Computations
+A residual is the "error" computed between the observed value and the fitted value like:
+$$  residual = observed\_value - fitted\_value $$
+The fitted value is computed from the predictive model, which in our case are the lines of best fits (aka characteristic curves) generated from the benchmarks.  The independent variable, $x$, is taken from the observed values.  What are the fitted values and observed values vary on the task.  If the task is assessing the correctness of the predictive model generated from benchmarking the SUT, then the observed values would come from the SIP with the similar build as the benchmarked SUT.  If the task is comparing the benchmarks between the two builds of a computer system, then it's a comparison of the old build's observed values (raw measurements from the benchmarks) against the characteristic curves of the new build.  Good lines of best fits have coefficients of determination, $R^2$, greater than 0.6.  There is no best way to ensure good $R^2$ aside from the *one-in-ten* rule, which in our case mean that we would have a minimum 10 attack points for our benchmark.  However, I propose having 100 attack points minimum for a single benchmark.
+## Residual Analysis for Benchmark Comparison
+The residuals' statisfaction of the Gauss-Markov Theorem determines how we analyze the benchmark comparison.  Those conditions are:
+
+1.  $ Cov(r_{i}, r_{j}) = 0, \forall i \neq j$: This condition is a strict requirement.  If this condition is not met, then the benchmark comparison is inconclusive.  The easy way to verify this is to visually inspect the residual plots of $r$ with respect to the independent variable.
+1.  For all i, $ Var(r_{i}) = \sigma^{2} \lt \infty $.  This condition is also a must.  This is the homoscedasticity requirement, or finite variance requirement.  If this requirement is not met, then the benchmark comparison is inconclusive.  The easy way to verify this is to visually inspect the residual plots of $r$ with respect to the independent variable.  The numerical way to test this is using Breusch–Pagan test.  In the Python programming language, there is a package called `statsmodels.stats.diagnostic` with a function called `het_breuschpagan`, which will do a hypothesis test for homodasticity using Breusch–Pagan test.
+1.  $ E[r] = k $: If $k$ is zero, then there is no difference in the benchmarks. Or, there is no anticipated performance impact between the two builds of the computer systems.  Else, there is difference between the benchmarks.  A negative expected value of residuals means the fitted values are generally have a higher value than the observed values.  A positive expected value of residuals means that the observed values are generally larger values from the fitted values.  Note, the Markov amendment to Gauss' original theorem removed the normality requirement so running a D'Agostino $K^2$ test on the residuals is not needed.
+
 # Timing Metrics
-Use of percentiles is preferred in measuring timing metrics with 50th, 95th, and 99th commonly used.  P50 is similar to the average of the timing metric, but conceptually they are not the same.  For extremely large populations (like the whole planet) or a population where laggards are expected, the 75th percentile is used and any larger percentile is ignored.  
+Use of percentiles is preferred in measuring timing metrics with 50th, 95th, and 99th commonly used.  Note that P50 is similar to the average of the timing metric, but conceptually they are not the same.  For extremely large populations (like the whole planet) or a population where laggards are expected (like rural communities with slow network connections or poor populations who cannot afford latest models of computing devices), the 75th percentile is used and any larger percentile is ignored.  There are three notable timing thresholds to know related to human behavior research:
+
+1.  400ms as defined by Doherty's Threshold.  Ideally, the computer system should respond within this threshold to every user interaction in order to increase productivity (and user satisfaction).  If the computer system cannot respond with the requested value within this threshold, the computer system should borrow patience from the user with a screen text asking for patience and rendering an animated screen.
+1.  2,000 as dictated by research on human patience with computer systems.  This value may fluctuate with the journey map.  A journey map with more user stress (like a user of a medical software where life and limb is on the line) may have a lower patience threshold.  Users have a tendency to do undesirable things when they become impatient (like spam inputs, forced reset/shutdown of application, lose conversion, lose lead, leave negative review of the product, etc.).  A strategy to deal with impatience to so keep switching the screen text and the animation in the screen in order to show the user that the application did not freeze.  Progress bars with percent completed are a great way to keep borrowing patience from users even though the computer task is way beyond this threshold.
+1.  10,000ms as dictated by research on human short attention span.  Any task that takes longer than this should run in a queue in the background so that the user can keep using the application.  This ideally should have a notification system that notifies the user when the background task completed or encounted an error.
