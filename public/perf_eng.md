@@ -50,9 +50,17 @@ Use the equation $y=mx+b$ to get the fitted values (aka predicted values).  Get 
 ### Compare Success Rate Benchmark
 Use the equation $y = 1.0$ to get the fitted values for $x<=x_{Maximum Safe Load}$.  Get the residuals between the observed values and the fitted values.  Determine the performance difference based on the expected value of the residuals.  Note that success rate characteristic outside of the passband is uncertain and is therefore considered to have low success rate.  The main thing to be concerned about in the success rate characteristic curve is that the $x_{Maximum Safe Load}$ is way beyond the operating range of the web server.
 
-
 # Web Server Soak Test
-//todo 
+Detects memory leaks, CPU over-utilization, and CPU under-utilization.
+## How-To
+1.  Build the load generator infrastructure.  The load generator used is the same one used in the benchmarking.
+1.  Before operating the load generatore, ensure a measurement collector is actively collecting the CPU utilization and memory usages of the SUT for at least once every minute.
+1.  Operate the load generator to apply a cold peak load on the SUT for 12 hours straight.  It is important that this load is applied on a constant level and uninterrupted.
+1.  At the end of the load, run the memory leak detection and CPU utilization analysis.
+### Memory Leak Detection
+//todo
+### CPU Utilization Analysis
+//todo
 
 # Webpage Benchmark
 //todo, FCP, LCP, FMP, TTI, TTFB, JSExecTime
