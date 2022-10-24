@@ -3,9 +3,7 @@ Typically, a computer system's load grows as more user gain access to the system
 
 # Web Server Benchmark
 Measures response time in milliseconds and success rate in percent.
-
 ## How-To
-
 ```mermaid
 graph LR
     A[Request Factory] -- Generate Request --> B[Pulsewave Generator]
@@ -45,7 +43,6 @@ Also, the disk should be fast within 3,000 IOPS or a little over the rated load.
 1.  Operate the load generator to apply 1-minute pulsewave towards the SUT (system-under-test) for at least 100 attack points throughout the operating range of the system (Lookup "one-in-ten" rule for predictive models).  However, before the pulsewaves are applied, apply a "warm-up load" to the SUT.  This load varies depending on the computer system as observed with SIP.  When in doubt, use a warm-up load of the highest rated load for a duration of 1 minute.  With that, there must be a cooldown duration between each pulsewave.  When in doubt, use a cooldown duration of 1 minute.
 Make sure that the load applied is similar to the load applied to the SIP.  If the load in SIP hits multiple http endpoints simultaneously, then the load generator must hit multiple http endpoints simultaneaously.
 1.  When the load generation is over and the measurements are collected, run the benchmark analysis computer program.
-
 ## Benchmark Comparison
 Compute the residuals between the two web server benchmarks (See "residuals computation" below).
 ### Compare Response Time Benchmark
@@ -63,30 +60,85 @@ Use the equation $y = 1.0$ to get the fitted values for $x<=x_{Maximum Safe Load
 # User Interaction Benchmark
 //todo 
 
-# Inferential Statistics
-In Pierre-Simon Laplace's published work *Essai philosophique sur les probabilités*, he wrote something titled "Princple VI" that would lay the foundation to inductive probabilities, which I personally used heavily in performance engineering any computer systems for reliability and usability.  Thomas Bayes' theorem is also a must know.  The main idea is: collecting diverse performance datapoints from a commputer system under simulated load will provide insight on how the computer system will perform under real-world traffic.  Also, hypothesis testing and residual computations can give insights on benchmark comparisons.  By using statistical analysis and forcing performance engineers to design experiments, subjectivity and confirmation bias is removed from the analytical results.  I have personally seen engineers rerun benchmarks because it did not meet their expected results.  I have seen engineering teams run benchmarks with no hypothesis in mind, and then subsequently author a hypothesis after the benchmark results are printed.  I have met engineers that confidently accepted statistical analysis results from just one performance datapoint.  I would bet they never heard of central limit theorem.  I call them gambling engineers.  They are either ignorant of statistical concepts or they choose to not apply any statistical concepts to their work.  In the end, I always witnessed the eventual results of their gambling, which is the frequent failure modes of their computer systems.  In my experience, it is important to formulate performance objectives before running any load generators and benchmarks in order to remove subjectivity and confirmation bias.   This also adds goals for the performance engineers and system engineers to work towards.
-
-# Assemble A Performance Engineering Team
+# Fundamentals 1/3: Inferential Statistics
+In Pierre-Simon Laplace's published work *Essai philosophique sur les probabilités*, he wrote something titled "Princple VI" that would lay the foundation to inductive probabilities, which I personally used heavily in performance engineering any computer systems for reliability and usability.  Thomas Bayes' theorem is also a must know.  The main idea is: collecting diverse performance datapoints from a commputer system under simulated load will provide insight on how the computer system will perform under real-world traffic.  Also, hypothesis testing and residual computations can give insights on benchmark comparisons.  By using statistical analysis and forcing performance engineers to design experiments, subjectivity and confirmation bias is removed from the analytical results.  I have personally seen engineers rerun benchmarks because it did not meet their expected results.  I have seen engineering teams run benchmarks with no hypothesis in mind, and then subsequently author a hypothesis after the benchmark results are printed.  I have met engineers that confidently accepted statistical analysis results from just one performance datapoint.  I would bet they never heard of central limit theorem.  I call them gambling engineers.  They are either ignorant of statistical concepts or they choose to not apply any statistical concepts to their engineering efforts.  In the end, I always witnessed the eventual results of their gambled engineering, which is the frequent failure modes of their computer systems.  In my experience, it is important to formulate performance objectives before running any load generators and benchmarks in order to remove subjectivity and confirmation bias.   This also adds goals for the performance engineers and computer system engineers to work towards.
+# Fundamentals 2/3: Assemble A Performance Engineering Team
 The team should be composed of :
 1.  Data Scientist: This role should be filled by a competent statistician who can identify dependent and independent random variables in an experiment or benchmark.  This person ensures that every experiments and benchmarks are free of biases and are mathematically sound.
-1.  Load Generator Operator:  This role should be filled by a capable server administrator who can build the computer system (the SUT) from the ground up and install different softwares like load generators and analytical computation softwares.  This person's goal is to use a load generator to run benchmarks on SUT and collect its performance datapoints.
+1.  Load Generator Operator:  This role should be filled by a capable server administrator who can build the computer system (the SUT) from the ground up and install different softwares like load generators and analytical computation softwares.  This person's goal is to use a load generator to run benchmarks on SUT, collect its performance datapoints, and conduct experiments.
 1.  Application Performance Monitor:  This role should be filled by a capable server administrator who can install monitoring tools and telemetry software on the computer system (the SIP).  This person's goal is to collect enough performance datapoints from the SIP in order to run experiments and benchmark comparisons.  This person should also know operating range, load growth trends, and states of the computer system that will dictate some of the parameters of the benchmarks or experiments.
-1.  Software Engineer: This role should be filled by a skilled computer programmer that developer different computer applications such as load generators, performance measurement collectors, analytical computation programs, and analysis report viewer.  Ideally, this role can build and operate the software as requested by other performance engineers.
+1.  Software Engineer: This role should be filled by a skilled computer programmer that can develop different computer applications such as load generators, performance measurement collectors, analytical computation programs, and analysis report viewer.  Ideally, this role can build and operate the software on a cronjob (or any scheduling tool) as requested by other performance engineers.
+# Fundamentals 3/3: Statistical Analysis Standard
+1.  Never use any statistical analysis that has a confidence level lower than 95%.
+1.  Linear regressions must have a coefficient of determination, $R^2$, greater than 0.6 to be considered an acceptable predictive model.  Collect more datapoints in order to achieve this value.  I recommend collecting datapoints from 100 attack points as a starting point even though the *one-in-ten* rule states that 10 is a good starting point.
+1.  Hypothesis tests must use an alpha threshold of no more than 0.05, which relates to a confidence level of 95%.
+1.  Datasets used in a hypothesis tests must be at least 100 in sample size.
+1.  Sample sizes of two datasets for a single two-sample hypothesis test must not be unequal by over 25% of the larger sample size.
+
+# Useful and Common Hypothesis Tests
+Hypothesis tests are useful in conducting experiments proving whether the SUT is operating within the performance objectives.  These flowcharts outlines the most common hypothesis tests that I run into.
+## One Sample
+Generally, it's a choice between Student's t-test and Wilcoxon's signed-rank test.
+```mermaid
+flowchart TD
+    A[Start with a sample and a target] --> x{Degenerate?}
+    x --> B{D'Agostino K^2}
+    B --> C{Student-t}
+    B --> D{Wilcoxon's signed-rank}
+    C --> E[Below target]
+    C --> F[On target]
+    C --> G[Above target]
+    D --> E
+    D --> F
+    D --> G
+    x --> sp[[Degenerate Distribution Handler]]
+```
+Figure: Computer program for one-sample hypothesis test
+Here are the Python functions that I used for these test:
+1.  D'Agostino $K^2$: `scipy.stats.normaltest`
+1.  Student-t: `scipy.stats.ttest_1samp`
+1.  Wilcoxon's signed-rank: `scipy.stats.wilcoxon`
+## Two Sample
+Generally, it's a choice between Student's t-test and Mann-Whitney U-test.  I really like Student's work in statistics.  I'm not a big fan of Welch's t-test, so I covered for Student's homogeneity requirement with Levene's test.  Note that we are treating these samples (assuming these are benchmarks) as unpaired samples (aka independent).
+```mermaid
+flowchart TD
+    A[Start with a and b] --> x{Degenerate?}
+    x --> B{D'Agostino K^2}
+    B --> D{Mann-Whitney-U}
+    B --> H{Levene}    
+    H --> C{Student-t}
+    C --> E[a < b]
+    C --> F[a = b]
+    C --> G[a > b]
+    H --> D
+    D --> E
+    D --> F
+    D --> G
+    x --> sp[[Degenerate Distribution Handler]]
+```
+Figure: Computer program for one-sample unpaired hypothesis test
+Here are the Python functions that I used for these test:
+1.  D'Agostino $K^2$: `scipy.stats.normaltest`
+1.  Levene: `scipy.stats.levene`
+1.  Student-t: `scipy.stats.ttest_ind`
+1.  Mann-Whiney-U: `scipy.stats.mannwhitneyu`
+## Degenerate Distributions
+Sometimes, there are distributions in these experiments, especially in any experiment involving caches or any sort of performance optimization.  These degenerate distributions will break hypothesis tests that are stated above.  A degenerate distribution can be easily identified with a near-zero standard deviation and near-zero variance.  One time, I received a degenerate distribution of database execution times that had standard deviations in the hundreds of nanoseconds.  However, the stopwatch used in the database benchmarking was only accurate in the microseconds, so I deemed the distribution to be degenerate.  Another way to identify degenerate distributions is through visually inspecting the histogram.  If the histogram resembles that of a Dirac delta function, then it is most likely a degenerate distribution.  The way to handle a degenerate distribution is to treat it as a deterministic scalar value using its mean.  So in a one sample hypothesis test, it's just a matter of equality comparison between the degenerate distribution's mean and the target value.  In a two sample hypothesis test, if only dataset is degenerate, then just run the test as a one sample hypothesis test using the degenerate distribution's mean as the target.
+
+# Residual Computations
+A residual is the "error" computed between the observed value and the fitted value like:
+$$ residual = observed\_value - fitted\_value $$
+The fitted value is computed from the predictive model, which in our case are the lines of best fits (aka characteristic curves) generated from the benchmarks.  The independent variable, $x$, is taken from the observed values.  What are the fitted values and observed values vary on the task.  If the task is assessing the correctness of the predictive model generated from benchmarking the SUT, then the observed values would come from the SIP with the similar build as the benchmarked SUT.  If the task is comparing the benchmarks between the two builds of a computer system, then it's a comparison of the old build's observed values (raw measurements from the benchmarks) against the characteristic curves of the new build.  Good lines of best fits have coefficients of determination, $R^2$, greater than 0.6.  There is no best way to ensure good $R^2$ aside from the *one-in-ten* rule, which in our case mean that we would have a minimum 10 attack points for our benchmark.  However, I propose having 100 attack points minimum for a single benchmark.
+## Residual Analysis for Benchmark Comparison
+The residuals' satisfaction the conditions of the Gauss-Markov Theorem determines how we analyze the benchmark comparison.  Those conditions are:
+1.  $ Cov(r_{i}, r_{j}) = 0, \forall i \neq j$: This condition is a strict requirement.  There must be no correlation among the residuals.  If this condition is not met, then the benchmark comparison is inconclusive.  There a naive algorithm to compute the covariance matrix.  In the Python programming language, there is a package called `numpy` with a function called `cov`, which uses the naive algorithm to compute the covariance matrix. Then, do a one-sample hypothesis test on $ Cov(r_{i}, r_{j}) = 0, \forall i \neq j$.
+1.  For all $i$, $ Var(r_{i}) = \sigma^{2} \lt \infty $.  This condition is also a must.  This is the homoscedasticity requirement, or finite variance requirement.  If this requirement is not met, then the benchmark comparison is inconclusive.  The numerical way to test this is using Breusch–Pagan test.  In the Python programming language, there is a package called `statsmodels.stats.diagnostic` with a function called `het_breuschpagan`, which will do a hypothesis test for homodasticity using Breusch–Pagan test.
+1.  $ E[r] = k $: If $k$ is zero, then there is no difference in the benchmarks. Or, there is no anticipated performance impact between the two builds of the computer systems.  Else, there is a difference between the benchmarks.  A negative expected value of residuals means the fitted values are generally have a higher value than the observed values.  A positive expected value of residuals means that the observed values are generally larger values from the fitted values.  Note, the Markov amendment to Gauss' original theorem removed the normality requirement so running a D'Agostino $K^2$ test on the residuals is not needed.  In the Python programming language, there is a package called `numpy` with a function called `mean`, which calculates the mean (aka the expected value).
 
 # Timing Metrics
 Use of percentiles is preferred in measuring timing metrics with 50th, 95th, and 99th commonly used.  Note that P50 is similar to the average of the timing metric, but conceptually they are not the same.  For extremely large populations (like the whole planet) or a population where laggards are expected (like rural communities with slow network connections or poor populations who cannot afford latest models of computing devices), the 75th percentile is used and any larger percentile is ignored.
 ## Human-behavior-driven timing thresholds
-There are three notable timing thresholds to know related to human behavior research:
+There are three notable timing thresholds to know stated from human behavior research:
 1.  400ms as defined by Doherty's Threshold.  Ideally, the computer system should respond within this threshold to every user interaction in order to increase productivity (and user satisfaction).  If the computer system cannot respond with the requested value within this threshold, the computer system should borrow patience from the user with a screen text asking for patience and rendering an animated screen.
-1.  2,000 as dictated by research on human patience with computer systems.  This value may fluctuate with the journey map.  A journey map with more user stress (like a user of a medical software where life and limb is on the line) may have a lower patience threshold.  Users have a tendency to do undesirable things when they become impatient (like spam inputs, forced reset/shutdown of application, lose conversion, lose lead, leave negative review of the product, etc.).  A strategy to deal with impatience to so keep switching the screen text and the animation in the screen in order to show the user that the application did not freeze.  Progress bars with percent completed are a great way to keep borrowing patience from users even though the computer task is way beyond this threshold.
+1.  2,000 as dictated by research on human patience with computer systems.  This value may fluctuate with the journey map.  A journey map with more user stress (like a user of a medical software where life and limb is on the line) may have a lower patience threshold.  Users have a tendency to do undesirable things when they become impatient (like spam inputs, forced reset/shutdown of application, lose conversion, lose lead, leave negative review of the product, etc.).  A strategy to deal with impatience is to keep switching the screen text and the animation in the screen in order to show the user that the application did not freeze.  Progress bars with percent completed are a great way to keep borrowing patience from users even though the computer task is way beyond this threshold.
 1.  10,000ms as dictated by research on human short attention span.  Any task that takes longer than this should run in a queue in the background so that the user can keep using the application.  This ideally should have a notification system that notifies the user when the background task completed or encounted an error.
-
-# Residual Computations
-A residual is the "error" computed between the observed value and the fitted value like:
-$$  residual = observed\_value - fitted\_value $$
-The fitted value is computed from the predictive model, which in our case are the lines of best fits (aka characteristic curves) generated from the benchmarks.  The independent variable, $x$, is taken from the observed values.  What are the fitted values and observed values vary on the task.  If the task is assessing the correctness of the predictive model generated from benchmarking the SUT, then the observed values would come from the SIP with the similar build as the benchmarked SUT.  If the task is comparing the benchmarks between the two builds of a computer system, then it's a comparison of the old build's observed values (raw measurements from the benchmarks) against the characteristic curves of the new build.  Good lines of best fits have coefficients of determination, $R^2$, greater than 0.6.  There is no best way to ensure good $R^2$ aside from the *one-in-ten* rule, which in our case mean that we would have a minimum 10 attack points for our benchmark.  However, I propose having 100 attack points minimum for a single benchmark.
-## Residual Analysis for Benchmark Comparison
-The residuals' satisfaction of the Gauss-Markov Theorem determines how we analyze the benchmark comparison.  Those conditions are:
-1.  $ Cov(r_{i}, r_{j}) = 0, \forall i \neq j$: This condition is a strict requirement.  There must be no correlation among the residuals.  If this condition is not met, then the benchmark comparison is inconclusive.  There a naive algorithm to compute the covariance matrix.  In the Python programming language, there is a package called `numpy` with a function called `cov`, which uses the naive algorithm to compute the covariance matrix.
-1.  For all $i$, $ Var(r_{i}) = \sigma^{2} \lt \infty $.  This condition is also a must.  This is the homoscedasticity requirement, or finite variance requirement.  If this requirement is not met, then the benchmark comparison is inconclusive.  The numerical way to test this is using Breusch–Pagan test.  In the Python programming language, there is a package called `statsmodels.stats.diagnostic` with a function called `het_breuschpagan`, which will do a hypothesis test for homodasticity using Breusch–Pagan test.
-1.  $ E[r] = k $: If $k$ is zero, then there is no difference in the benchmarks. Or, there is no anticipated performance impact between the two builds of the computer systems.  Else, there is a difference between the benchmarks.  A negative expected value of residuals means the fitted values are generally have a higher value than the observed values.  A positive expected value of residuals means that the observed values are generally larger values from the fitted values.  Note, the Markov amendment to Gauss' original theorem removed the normality requirement so running a D'Agostino $K^2$ test on the residuals is not needed.  In the Python programming language, there is a package called `numpy` with a function called `mean`, which calculates the mean (aka the expected value).
