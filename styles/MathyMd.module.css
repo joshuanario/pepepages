@@ -26,45 +26,6 @@
   }
 }
 
-#top {
-  position: relative;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-#top a{
-  color: yellow;
-}
-
-#top a:hover{
-  color: yellowgreen;
-  font-style: oblique;
-  cursor: pointer;
-}
-
-#top a:visited{
-  color: orange;
-  font-style: italic;
-}
-
-#algoArt {
-  position: relative;
-  display: block;
-  width: 102px; /* 51px is US Passport Dimension */
-  max-width: 102px;
-  margin: 0;
-  padding: 0;
-}
-
-#intro {
-  position: relative;
-  display: block;
-  width: calc(98% - 102px);
-  margin: 0;
-  padding: 0 1%;
-}
-
 #content {
   position: relative;
   width: 100%;
