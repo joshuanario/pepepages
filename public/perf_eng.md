@@ -37,14 +37,14 @@ flowchart TD
 
 Figure: Computer program for web server benchmark results rendering
 
-1.  First, build the load generator infrastructure as illustrated.  Ensure that the request factory has high throughput, low latency, and more importantly variabilization that mirrors requests as seens in SIP  (system-in-production).  Ensure that the pulsewave generator has fast CPU, fast disk-writes, large memory, and high throughput.  More importantly, ensure the measured load generation is not off by no more than 50% from the rated load.  Also, the load generator only needs to report to the waveform monitor once every second for real-time viewing.  Lastly, the measurements are recorded (if configured) during load generation into the fast-writing disks, and then at the end of the load generation, the load generator stores all the measurements into the measurement store.  Make sure to have enough disk space.  The rule of thumb for disk space is:
+1.  First, build the load generator infrastructure as illustrated.  Commonly used software libraries for this are: Go's `vegeta`, Python's `locust`, Nodejs' `artillery`, and Java's `JMeter`.  Ensure that the request factory has high throughput, low latency, and more importantly variabilization that mirrors requests as seens in SIP  (system-in-production).  Ensure that the pulsewave generator has fast CPU, fast disk-writes, large memory, and high throughput.  More importantly, ensure the measured load generation is not off by no more than 50% from the rated load.  Also, the load generator only needs to report to the waveform monitor once every second for real-time viewing.  Lastly, the measurements are recorded (if configured) during load generation into the fast-writing disks, and then at the end of the load generation, the load generator stores all the measurements into the measurement store.  Make sure to have enough disk space.  The rule of thumb for disk space is:
     $$
     lt = d
     $$
     where $l$ is rated load, $t$ is the benchmark duration, and $d$ is the disk space.
     Also, the disk should be fast within 3,000 IOPS on average or the average IOPS is at least three times the rated load.
 
-2.  Second, create the computer program for the web server benchmark results rendering.  The computer program must produce the following results:
+1.  Second, create the computer program for the web server benchmark results rendering.  The computer program must produce the following results:
     *   Response Time Characteristic Curve for each desired percintiles in the form of
         $$
         y = mx + b
@@ -61,9 +61,9 @@ Figure: Computer program for web server benchmark results rendering
         \right.
         $$
         where $f > 1.0$, $g > 0$, $h > x\_{Maximum Safe Load}$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the response curve in the pass band is not continous with a 100% success rate, keep the results and rerun the benchmark until there are datapoints that show a continuous response curve in the passband.  If after three reruns and there is still no clear passband, stop running more benchmarks and assume that the SUT (system-under-test) has no passband.  If there are less than 100 datapoints within the passband, run the benchmarks again and again until there are over 100 datapoints within the passband.
-3.  Operate the load generator to apply 1-minute pulsewave towards the SUT for at least 100 attack points throughout the operating range of the system (Lookup "one-in-ten" rule for predictive models).  However, before the pulsewaves are applied, apply a "warm-up load" to the SUT.  This load varies depending on the computer system as observed with SIP.  When in doubt, use a warm-up load of the highest rated load for a duration of 1 minute.  With that, there must be a cooldown duration between each pulsewave.  When in doubt, use a cooldown duration of 1 minute.
+1.  Operate the load generator to apply 1-minute pulsewave towards the SUT for at least 100 attack points throughout the operating range of the system (Lookup "one-in-ten" rule for predictive models).  However, before the pulsewaves are applied, apply a "warm-up load" to the SUT.  This load varies depending on the computer system as observed with SIP.  When in doubt, use a warm-up load of the highest rated load for a duration of 1 minute.  With that, there must be a cooldown duration between each pulsewave.  When in doubt, use a cooldown duration of 1 minute.
     Make sure that the load applied is similar to the load applied to the SIP.  If the load in SIP hits multiple http endpoints simultaneously, then the load generator must hit multiple http endpoints simultaneaously.
-4.  When the load generation is over and the measurements are collected, run the benchmark analysis computer program.
+1.  When the load generation is over and the measurements are collected, run the benchmark analysis computer program.
 
 ## Benchmark Comparison
 
@@ -84,9 +84,9 @@ Detects memory leaks, CPU over-utilization, and CPU under-utilization.
 ## How-To
 
 1.  Build the load generator infrastructure.  The load generator used is the same one used in the benchmarking.
-2.  Before operating the load generatore, ensure a measurement collector is actively collecting the CPU utilization and memory usages of the SUT for at least once every minute.
-3.  Operate the load generator to apply a cold peak load on the SUT for 12 hours straight.  It is important that this load is applied on a constant level and uninterrupted.
-4.  At the end of the load, run the memory leak detection and CPU utilization analysis.
+1.  Before operating the load generatore, ensure a measurement collector is actively collecting the CPU utilization and memory usages of the SUT for at least once every minute.
+1.  Operate the load generator to apply a cold peak load on the SUT for 12 hours straight.  It is important that this load is applied on a constant level and uninterrupted.
+1.  At the end of the load, run the memory leak detection and CPU utilization analysis.
 
 ### Memory Leak Detection
 
@@ -105,15 +105,46 @@ Once all the sampled CPU utilization values are collected, two hypothesis tests 
 
 *   Under-utilization test:  Do a one sample hypothesis tests on the collected values where the target is 30%.  If the hypothesis tests proves that the collected values are most likely equal or below the target, then the system-under-test's CPU is under-utilized during the soak test.
 *   Over-utilization test:  Do a one sample hypothesis tests on the collected values where the target is 70%.  If the computer system is not sensitive to latencies, then setting the target to 80% is a sound judgement.  If the hypothesis tests proves that the collected values are most likely equal or above the target, then the system-under-test's CPU is over-utilized during the soak test.
-    (See queueing theory below to understand CPU utilization analysis in great details.)
+
+(See queueing theory below to understand CPU utilization analysis in great details.)
 
 # Webpage Benchmark
 
-//todo, FCP, LCP, FMP, TTI, TTFB, JSExecTime
+Measures first contentful paint (FCP), largest contentful paint (LCP), first meaningful paint (FMP), time-to-interactive (TTI), time-to-first-byte (TTFB, also similar to server response), and javascript bootup time (also know as javascript execution time).
+
+## How-To
+
+```mermaid
+graph LR
+    A[Multiple webpage profilers] -- Retrieve webpage --> B[Web Server]
+    A -- Benchmark webpage --> A
+    A -- Collect measurement --> C(Measurement Store)
+```
+
+Figure: Infrastructure for webpage benchmarking
+
+1.  First, build the webpage benchmarking infrastructure as illustrated.  Ensure that the webserver has high throughput, low latency, and within close proximity to the profilers.  Ensure that there at lease more than one compute fabric in the webpage profiler cluster.  For example, if the profiler is an alpine-based docker image with `chrome-launcher` and `lighthouse`, the docker containers should be hosted in at least two nodes.  Ideally, use three or more compute fabrics for both the profilers and the web server.  There should be at least 100 web profilers.  So with the example of the previous docker image, there should be at least 100 docker containers distributed evenly amongst three nodes.  The profilers should be configured with the screen resolution and network bandwidth of the target device as seen with SIP.  Each single profiler should collect at least 100 measurements of each metric, and then calculate the percentiles of each metric (see timing metrics below).  Different applications may target different webpage performance object.  Some applications will target FCP.  Some applications will target LCP and TTI.  These performance objectives are dictated by user experience objectives.
+1.  Next, operate the webpage benchmarkers and wait until all the measurements are collected.
+1.  When the load generation is over and the measurements are collected, plot the percentiles in a histogram (in Python programming language, there is `matplotlib.pyplot`).  If benchmark comparison has to be done, do  hypothesis test (see hypothesis test below).
 
 # User Interaction Benchmark
 
-//todo
+Measures time-on-tasks and success rates (success are dictated by user experience).
+
+## How-To
+
+```mermaid
+graph LR
+    A[Multiple web browser automatons] -- Retrieve webapp --> B[Web Server]
+    A -- Automate web-app task --> A
+    A -- Collect measurement --> C(Measurement Store)
+```
+
+Figure: Infrastructure for web-app user interaction benchmarking
+
+1.  First, build the web-app user interaction benchmarking infrastructure as illustrated.  Ensure that the webserver has high throughput, low latency, and within close proximity to the profilers.  Ensure that there at lease more one compute fabric in the browser automata cluster.  For example, if the browser automaton is an alpine-based docker image with `cypress` (an alternative would be `selenium`), the docker containers should be hosted in at least two nodes.  Ideally, use three or more compute fabrics for both the browser automations and the web server.  There should be at least 100 browser automatons.  So with the example of the previous docker image, there should be at least 100 docker containers distributed evenly amongst three nodes.  The web browser should be configured with the screen resolution and network bandwidth of the target device as seen with SIP.  Each single browser automaton should collect at least 100 measurements of each scripted user interaction, and then calculate the percentiles of each time-on-task (see timing metrics below) and success rate of each task.
+1.  Next, operate the webpage benchmarkers and wait until all the measurements are collected.
+1.  When the load generation is over and the measurements are collected, plot the metrics in a histogram (in Python programming language, there is `matplotlib.pyplot`).  If benchmark comparison has to be done, do  hypothesis test (see hypothesis test below).
 
 # Performance Objectives
 
@@ -121,24 +152,24 @@ In my experience, it is very important to formulate performance objectives befor
 
 # Fundamentals 1/3: Inferential Statistics
 
-In Pierre-Simon Laplace's published work *Essai philosophique sur les probabilités*, he wrote something titled "Princple VI" that would lay down the foundation to inductive probabilities, which I personally used heavily in performance engineering any computer systems for reliability and usability.  Thomas Bayes' theorem is also a must know.  The main idea is: collecting diverse performance datapoints from a commputer system under simulated load will provide insight on how the computer system will perform under real-world traffic.  Also, hypothesis testing and residual computations can give insights on benchmark comparisons.  By using statistical analysis and forcing performance engineers to design experiments, subjectivity and confirmation bias is removed from the analytical results.  I have personally seen engineers rerun benchmarks because it did not meet their expected results.  I have seen engineering teams run benchmarks with no hypothesis in mind, and then subsequently author a hypothesis after the benchmark results are printed.  I have met engineers that confidently accepted statistical analysis results from just one performance datapoint.  I'm guessing these engineers never heard of central limit theorem.  I call them gambling engineers.  They are either ignorant of statistical concepts or they choose to not apply any statistics to their engineering efforts.  In the end, I always witnessed the eventual results of their gambled engineering, which is the frequent failure modes of their computer systems.
+In Pierre-Simon Laplace's published work *Essai philosophique sur les probabilités*, he wrote something titled "Princple VI" that would lay down the foundation to inductive probabilities, which I personally used heavily in performance engineering any computer systems for reliability and usability.  Thomas Bayes' theorem is also a must-know.  The main idea is: collecting diverse performance datapoints from a computer system under simulated load will provide insight on how the computer system will perform under real-world traffic.  Also, hypothesis testing and residual computations can give insights on benchmark comparisons.  By using statistical analysis and forcing performance engineers to design experiments, subjectivity and confirmation bias is removed from the analytical results.  I have personally seen engineers rerun benchmarks because it did not meet their expected results.  I have seen engineering teams run benchmarks with no hypothesis in mind, and then subsequently author a hypothesis after the benchmark results are printed.  I have met engineers that confidently accepted statistical analysis results from just one performance datapoint.  I'm guessing these engineers never heard of central limit theorem.  I call them gambling engineers.  They are either ignorant of statistical concepts or they choose to not apply any statistics to their engineering efforts.  In the end, I always witnessed the eventual results of their gambled engineering, which is the frequent failure modes of their computer systems.
 
 # Fundamentals 2/3: Performance Engineering Team
 
-The team should be composed of :
+The team should be composed of:
 
 1.  Data Scientist: This role should be filled by a competent statistician who can identify dependent and independent random variables in an experiment or benchmark.  This person ensures that every experiments and benchmarks are free of biases and are mathematically sound.
-2.  Load Generator Operator:  This role should be filled by a capable server administrator who can build the computer system (the SUT) from the ground up and install different softwares like load generators and analytical computation softwares.  This person's goal is to use a load generator to run benchmarks on SUT, collect its performance datapoints, and conduct experiments.
-3.  Application Performance Monitor:  This role should be filled by a capable server administrator who can install monitoring tools and telemetry software on the computer system (the SIP).  This person's goal is to collect enough performance datapoints from the SIP in order to run experiments and benchmark comparisons.  This person should also know operating range, load growth trends, and states of the computer system that will dictate some of the parameters of the benchmarks or experiments.
-4.  Software Engineer: This role should be filled by a skilled computer programmer that can develop different computer applications such as load generators, performance measurement collectors, analytical computation programs, and analysis report viewer.  Ideally, this role can build and operate the software on a cronjob (or any scheduling tool) as requested by other performance engineers.
+1.  Load Generator Operator:  This role should be filled by a capable server administrator who can build the computer system (the SUT) from the ground up and install different softwares like load generators and analytical computation softwares.  This person's goal is to use a load generator to run benchmarks on SUT, collect its performance datapoints, and conduct experiments.
+1.  Application Performance Monitor:  This role should be filled by a capable server administrator who can install monitoring tools and telemetry software on the computer system (the SIP).  This person's goal is to collect enough performance datapoints from the SIP in order to run experiments and benchmark comparisons.  This person should also know operating range, load growth trends, and states of the computer system that will dictate some of the parameters of the benchmarks or experiments.
+1.  Software Engineer: This role should be filled by a skilled computer programmer that can develop different computer applications such as load generators, performance measurement collectors, analytical computation programs, and analysis report viewer.  Ideally, this role can build and operate the software on a cronjob (or any scheduling tool) as requested by other performance engineers.
 
 # Fundamentals 3/3: Statistical Analysis Standard
 
 1.  Never use any statistical analysis that has a confidence level lower than 95%.
-2.  Linear regressions must have a coefficient of determination, $R^2$, greater than 0.6 to be considered an acceptable predictive model.  Collect more datapoints in order to achieve this value.  I recommend collecting datapoints from 100 attack points as a starting point even though the *one-in-ten* rule states that 10 is a good starting point.
-3.  Hypothesis tests must use an alpha threshold of no more than 0.05, which relates to a confidence level of 95%.
-4.  Datasets used in a hypothesis tests must be at least 100 in sample size.
-5.  Sample sizes of two datasets for a single two-sample hypothesis test must not be unequal by over 25% of the larger sample size.
+1.  Linear regressions must have a coefficient of determination, $R^2$, greater than 0.6 to be considered an acceptable predictive model.  Collect more datapoints in order to achieve this value.  I recommend collecting datapoints from 100 attack points as a starting point even though the *one-in-ten* rule states that 10 is a good starting point.
+1.  Hypothesis tests must use an alpha threshold of no more than 0.05, which relates to a confidence level of 95%.
+1.  Datasets used in a hypothesis tests must be at least 100 in sample size.
+1.  Sample sizes of two datasets for a single two-sample hypothesis test must not be unequal by over 25% of the larger sample size.
 
 # Useful and Common Hypothesis Tests
 
