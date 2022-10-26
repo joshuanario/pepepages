@@ -37,10 +37,11 @@ flowchart TD
 
 Figure: Computer program for web server benchmark results rendering
 
-1.  First, build the load generator infrastructure as illustrated.  Ensure that the request factory has high throughput, low latency, and more importantly variabilization that mirrors requests as seens in SIP  (system-in-production).  Ensure that the pulsewave generator has fast CPU, fast disk-writes, large memory, and high throughput.  More importantly, ensure the measured load generation is not off by no more than 50% from the rated load.  Also, the load generator only needs to report to the waveform monitor once every second for real-time viewing.  Lastly, the measurements are recorded (if configured) during load generation into the fast-writing disks, and then at the end of the load generation, the load generator stores all the measurements into the measurement store.  Make sure to have enough disk space.  The rule of thumb for disk space is: 
+1.  First, build the load generator infrastructure as illustrated.  Ensure that the request factory has high throughput, low latency, and more importantly variabilization that mirrors requests as seens in SIP  (system-in-production).  Ensure that the pulsewave generator has fast CPU, fast disk-writes, large memory, and high throughput.  More importantly, ensure the measured load generation is not off by no more than 50% from the rated load.  Also, the load generator only needs to report to the waveform monitor once every second for real-time viewing.  Lastly, the measurements are recorded (if configured) during load generation into the fast-writing disks, and then at the end of the load generation, the load generator stores all the measurements into the measurement store.  Make sure to have enough disk space.  The rule of thumb for disk space is:
     $$
-    rated\_load * load\_test\_duration = disk\_space
+    lt = d
     $$
+    where $l$ is rated load, $t$ is the benchmark duration, and $d$ is the disk space.
     Also, the disk should be fast within 3,000 IOPS on average or the average IOPS is at least three times the rated load.
 
 2.  Second, create the computer program for the web server benchmark results rendering.  The computer program must produce the following results:
@@ -53,10 +54,10 @@ Figure: Computer program for web server benchmark results rendering
         $$
         y =
         \left \{
-            \begin{array}{ll}
-                f - e^{gx-h} & x>x\_{Maximum Safe Load} \\
-                1.0 & x<=x\_{Maximum Safe Load} \\
-            \end{array}
+        \begin{array}{ll}
+        f - e^{gx-h} & x>x\_{Maximum Safe Load} \\
+        1.0 & x<=x\_{Maximum Safe Load} \\
+        \end{array}
         \right.
         $$
         where $f > 1.0$, $g > 0$, $h > x\_{Maximum Safe Load}$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the response curve in the pass band is not continous with a 100% success rate, keep the results and rerun the benchmark until there are datapoints that show a continuous response curve in the passband.  If after three reruns and there is still no clear passband, stop running more benchmarks and assume that the SUT (system-under-test) has no passband.  If there are less than 100 datapoints within the passband, run the benchmarks again and again until there are over 100 datapoints within the passband.
