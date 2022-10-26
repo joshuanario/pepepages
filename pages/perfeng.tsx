@@ -1,3 +1,4 @@
+import fs from 'fs'
 import path from 'path'
 import type { NextPage } from 'next'
 import Head from 'next/head'
@@ -45,6 +46,12 @@ export async function getStaticProps() {
       writeSync(desc as Compatible);
     })
 
+    const mmdcontentHack = await read(path.resolve(process.cwd(), '_mmd', 'perf_eng.md'))
+    fs.writeFileSync(path.resolve(process.cwd(), '_mmd', 'perf_eng.md'), 
+      String(mmdcontentHack).replace(`\\left{`, `\\left\\{`)
+      .replace(`r\\_{i}`, `r_{i}`).replace(`r\\_{i}`, `r_{i}`)
+      .replace(`r\\_{j}`, `r_{j}`).replace(`E\\[r]`, `E[r]`))
+
     const mmdcontent = await read(path.resolve(process.cwd(), '_mmd', 'perf_eng.md'))
     const file = await unified()
     .use(remarkParse)
@@ -54,7 +61,7 @@ export async function getStaticProps() {
     .use(remarkRehype)
     .use(rehypeMathjax)
     .use(rehypeStringify)
-    .process(mmdcontent as Compatible)
+    .process(mmdcontent)
 
     return {
       props: {

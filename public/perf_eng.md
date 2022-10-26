@@ -53,7 +53,7 @@ Figure: Computer program for web server benchmark results rendering
     *   Success Rate Characteristice Curve in the form of
         $$
         y =
-        \left \{
+        \left\{
         \begin{array}{ll}
         f - e^{gx-h} & x>x\_{Maximum Safe Load} \\
         1.0 & x<=x\_{Maximum Safe Load} \\
@@ -226,15 +226,18 @@ Another common distribution in performance engineering is bimodal distribution, 
 # Residual Computations
 
 A residual is the "error" computed between the observed value and the fitted value like:
-$$ residual = observed\_value - fitted\_value $$
+$$
+r = o - f
+$$
+where $r$ is the residual, $o$ is the observed value, and $f$ is the fitted value.
 The fitted value is computed from the predictive model, which in our case are the lines of best fits (aka characteristic curves) generated from the benchmarks.  The independent variable, $x$, is taken from the observed values.  What are the fitted values and observed values vary on the task.  If the task is assessing the correctness of the predictive model generated from benchmarking the SUT, then the observed values would come from the SIP with the similar build as the benchmarked SUT.  If the task is comparing the benchmarks between the two builds of a computer system, then it's a comparison of the old build's observed values (raw measurements from the benchmarks) against the characteristic curves of the new build.  Good lines of best fits have coefficients of determination, $R^2$, greater than 0.6.  There is no best way to ensure good $R^2$ aside from the *one-in-ten* rule, which in our case mean that we would have a minimum 10 attack points for our benchmark.  However, I propose having 100 attack points minimum for a single benchmark.
 
 ## Residual Analysis for Benchmark Comparison
 
 The residuals' satisfaction the conditions of the Gauss-Markov Theorem determines how we analyze the benchmark comparison.  Those conditions are:
 
-1.  $ Cov(r\_{i}, r\_{j}) = 0, \forall i \neq j$: This condition is a strict requirement.  There must be no correlation among the residuals.  If this condition is not met, then the benchmark comparison is inconclusive.  There a naive algorithm to compute the covariance matrix.  In the Python programming language, there is a package called `numpy` with a function called `cov`, which uses the naive algorithm to compute the covariance matrix. Then, do a one-sample hypothesis test where the target is zero and the samples are the entries outside of the main diagonal of the covariance matrix.  (See one sample hypothesis test.)
-2.  For all $i$, $ Var(r\_{i}) = \sigma^{2} \lt \infty $.  This condition is also a must.  This is the homoscedasticity requirement, or finite variance requirement.  If this requirement is not met, then the benchmark comparison is inconclusive.  The numerical way to test this is using Breusch–Pagan test.  In the Python programming language, there is a package called `statsmodels.stats.diagnostic` with a function called `het_breuschpagan`, which will do a hypothesis test for homodasticity using Breusch–Pagan test.
+1.  $ Cov(r_{i}, r_{j}) = 0, \forall i \neq j$: This condition is a strict requirement.  There must be no correlation among the residuals.  If this condition is not met, then the benchmark comparison is inconclusive.  There a naive algorithm to compute the covariance matrix.  In the Python programming language, there is a package called `numpy` with a function called `cov`, which uses the naive algorithm to compute the covariance matrix. Then, do a one-sample hypothesis test where the target is zero and the samples are the entries outside of the main diagonal of the covariance matrix.  (See one sample hypothesis test.)
+2.  For all $i$, $ Var(r_{i}) = \sigma^{2} \lt \infty $.  This condition is also a must.  This is the homoscedasticity requirement, or finite variance requirement.  If this requirement is not met, then the benchmark comparison is inconclusive.  The numerical way to test this is using Breusch–Pagan test.  In the Python programming language, there is a package called `statsmodels.stats.diagnostic` with a function called `het_breuschpagan`, which will do a hypothesis test for homodasticity using Breusch–Pagan test.
 3.  $ E[r] = k $: If $k$ is zero, then there is no difference in the benchmarks. Or, there is no anticipated performance impact between the two builds of the computer systems.  Else, there is a difference between the benchmarks.  A negative expected value of residuals means the fitted values are generally have a higher value than the observed values.  A positive expected value of residuals means that the observed values are generally larger values from the fitted values.  Note, the Markov amendment to Gauss' original theorem removed the normality requirement so running a D'Agostino $K^2$ test on the residuals is not needed.  In the Python programming language, there is a package called `numpy` with a function called `mean`, which calculates the mean (aka the expected value).
 
 # Timing Metrics
