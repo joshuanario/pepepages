@@ -110,7 +110,7 @@ Once all the sampled CPU utilization values are collected, two hypothesis tests 
 
 # Webpage Benchmark
 
-Measures first contentful paint (FCP), largest contentful paint (LCP), first meaningful paint (FMP), time-to-interactive (TTI), time-to-first-byte (TTFB, also similar to server response), and javascript bootup time (also know as javascript execution time).
+Measures first contentful paint (FCP), largest contentful paint (LCP), first meaningful paint (FMP), time-to-interactive (TTI), time-to-first-byte (TTFB, also similar to server response time), and Javascript bootup time (also know as Javascript execution time).
 
 ## How-To
 
@@ -289,7 +289,7 @@ There are three notable timing thresholds to know stated from human behavior res
 
 # TCP slow start
 
-Understanding TCP congestion control (aka slow-start) is critical in performance tuning modern webapps.  Imagine an algorithm trying to send a file down a transport channel without knowing its file size.  The algorithm starts with a small chunk of the file, and then doubles the size of the next chunk to be sent if the previous file was sent successfully.  Slow-start is not a concern for streaming of large data as the data transport would have optimized within the early phase of the data transport.  Slow start is a main concern for bursty data transfers like the download of web assets, and speed of the network is not a great remedy in overcoming the speed degradation that comes with slow-start.  The best way to reduce the speed degradation caused by slow-start is to lower the file size.  Decreasing the file size drastically reduces the number of round-trips.  Nowadays, javascript app builders (like `webpack`) will even raise a warning when the build output is over **244 kilobytes** and is capable of disassembly of large web assets into smaller pieces with the hopes of assembly during page loads in the browser's runtime.  Some webpage benchmarking tools like Google Chrome's `lighthouse` will raise a warning if the content is not compressed (using a compression algorithm like `gzip`).
+Understanding TCP congestion control (aka slow-start) is critical in performance tuning modern webapps.  Imagine an algorithm trying to send a file down a transport channel without knowing its file size.  The algorithm starts with a small chunk of the file, and then doubles the size of the next chunk to be sent if the previous file was sent successfully.  Slow-start is not a concern for streaming of large data as the data transport would have optimized within the early phase of the data transport.  Slow start is a main concern for bursty data transfers like the download of web assets, and speed of the network is not a great remedy in overcoming the speed degradation that comes with slow-start.  The best way to reduce the speed degradation caused by slow-start is to lower the file size.  Decreasing the file size drastically reduces the number of round-trips.  Nowadays, Javascript app builders (like `webpack`) will even raise a warning when the build output is over **244 kilobytes** and is capable of disassembly of large web assets into smaller pieces with the hopes of assembly during page loads in the browser's runtime.  Some webpage benchmarking tools like Google Chrome's `lighthouse` will raise a warning if the content is not compressed (using a compression algorithm like `gzip`).
 
 # Queueing Theory
 
@@ -303,9 +303,42 @@ Amdahl's Law and Gustafson's law essentially dictates that a properly utilized c
 
 # Database Tuning
 
-// todo invests in DBAs and DB profilers
-
+Invest in hiring a database administrators (DBA).  Database performance tuning ideally should involve DBAs.  Database technologies requiree unique technical expertise that an average application developer do not possess.  Also invest in database performance monitors and profilers.  Database servers (and also any data persistence technology) typically face the most latencies in execution times due to read/write operations to the disks.  Web server typically have the process spin up and hydrate the binaries into RAM for faster response times, but databases (or any datastore) would require additional computer workloads in reading/writing to the disk.  Once a DBA is on board, common performance objectives are:
+-  Execution plan optimization (Reduce execution times of most commonly used laggy queries, etc.)
+-  Capacity planning (Will doubling the volume of the data in the database lower the success rate of the whole computer system?)
+-  Soak test (Is the database server going to OOM, or have its CPU over-utilized?)
 
 # Uptime Calculators
 
-// todo
+Uptime is a measure of the availability of the computer sytem (SIP with real-time traffic or an SUT under production-like load).  It is calculated as a ratio between the duration the system was monitored to be in an available state over the total duration the computer was being monitored.  A formula to follow is this:
+$$
+A = \frac{h}{t}
+$$
+where $A$ is the uptime as a ratio (multiply by 100 to convert to percent), $h$ is the number of health checks on the computer systems that returned with a successful "healthy" response, and $t$ is the total number of health checks sent to the computer system.  Ensure that the computer system's response to health checks are fast (near-zero latency) that always responds with "healthy" status.  Do not add any computationally expensive logic to the health check response logic.  Any health checks that takes too long to get a response (like 30 seconds for starters) should be assumed "unhealthy".  The health checks should be routine like every 5 minutes.  Do not confuse uptime with server-side success rate.  Both metrics are commonly used in the industry as measures of availability.  However, they are completely different metrics conceptually.  High uptime means the computer system is always responding to health checks, but the computer system could still have a low success rate due to issues where it cannot handle the load properly, etc.
+
+## Service Level Agreements
+
+Typically uptimes are sampled in periods of days, months, or years.  Annual uptimes are very common since they are typically related to SLAs (service level agreements) or SLOs (service level objectives). 
+
+
+| Uptime period | Total health checks, $h$ |
+| --- | --- | 
+| Yearly | 105,120 |
+| Monthly | 8,760 |
+| Weekly | 2016 |
+| Daily | 288 |
+
+| SLA/SLO | Sampling period | Allowed downtime |
+| --- | ---: | --- |
+| 99.0 | Daily | 14m 24s |
+|  | Weekly | 1h 40m 48s |
+|  | Monthly | 7h 18m 17s |
+|  | Yearly | 3d 15h 39m 29s |
+| 99.9 | Daily | 1m 26s |
+|  | Weekly | 10m 4s |
+|  | Monthly | 43m 12s |
+|  | Yearly | 8h 45m 36s |
+
+# Conclusion
+
+The methods proposed above maybe deemed over-engineered.  I say that if you choose to gamble on the performance of your computer system, then you choose to accept the risk of failure.  These methods are merely ways to control those risks through understanding of sound mathematical principles and scientific approach.  More importantly, if a benchmark is started without any objective in mind, then the benchmark results will dictate the objective.  Always work towards an engineering objective.
