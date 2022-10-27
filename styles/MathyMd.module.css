@@ -48,3 +48,7 @@
   color: orange;
   font-style: italic;
 }
+
+#content img {
+  width: 100%;
+}
