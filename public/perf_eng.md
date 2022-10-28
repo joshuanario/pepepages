@@ -55,12 +55,12 @@ Figure: Computer program for web server benchmark results rendering
         y =
         \left\{
         \begin{array}{ll}
-        f - e^{gx-h} & x>x\_{MSL} \\
-        1.0 & x<=x\_{MSLS} \\
+        f - e^{gx-h} & x>x_{MSL} \\
+        1.0 & x<=x_{MSL} \\
         \end{array}
         \right.
         $$
-        where $f > 1.0$, $g > 0$, $h > x\_{MSL}$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the response curve in the pass band is not continous with a 100% success rate, keep the results and rerun the benchmark until there are datapoints that show a continuous response curve in the passband.  If after three reruns and there is still no clear passband, stop running more benchmarks and assume that the SUT (system-under-test) has no passband.  If there are less than 100 datapoints within the passband, run the benchmarks again and again until there are over 100 datapoints within the passband.
+        where $f > 1.0$, $g > 0$, $h > x_{MSL}$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the response curve in the pass band is not continous with a 100% success rate, keep the results and rerun the benchmark until there are datapoints that show a continuous response curve in the passband.  If after three reruns and there is still no clear passband, stop running more benchmarks and assume that the SUT (system-under-test) has no passband.  If there are less than 100 datapoints within the passband, run the benchmarks again and again until there are over 100 datapoints within the passband.
 1.  Operate the load generator to apply 1-minute pulsewave towards the SUT for at least 100 attack points throughout the operating range of the system (Lookup "one-in-ten" rule for predictive models).  However, before the pulsewaves are applied, apply a "warm-up load" to the SUT.  This load varies depending on the computer system as observed with SIP.  When in doubt, use a warm-up load of the highest rated load for a duration of 1 minute.  With that, there must be a cooldown duration between each pulsewave.  When in doubt, use a cooldown duration of 1 minute.
     Make sure that the load applied is similar to the load applied to the SIP.  If the load in SIP hits multiple http endpoints simultaneously, then the load generator must hit multiple http endpoints simultaneaously.
 1.  When the load generation is over and the measurements are collected, run the benchmark analysis computer program.
@@ -75,7 +75,7 @@ Use the equation $y=mx+b$ to get the fitted values (aka predicted values).  Get 
 
 ### Compare Success Rate Benchmark
 
-Use the equation $y = 1.0$ to get the fitted values for $x<=x\_{Maximum Safe Load}$.  Get the residuals between the observed values and the fitted values.  Determine the performance difference based on the expected value of the residuals.  Note that success rate characteristic outside of the passband is uncertain and is therefore considered to have low success rate.  The main thing to be concerned about in the success rate characteristic curve is that the $x\_{Maximum Safe Load}$ is way beyond the operating range of the web server.
+Use the equation $y = 1.0$ to get the fitted values for $x<=x_{MSL}$.  Get the residuals between the observed values and the fitted values.  Determine the performance difference based on the expected value of the residuals.  Note that success rate characteristic outside of the passband is uncertain and is therefore considered to have low success rate.  The main thing to be concerned about in the success rate characteristic curve is that the $x\_{MSL}$ is way beyond the operating range of the web server.
 
 # Web Server Soak Test
 
