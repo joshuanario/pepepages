@@ -55,12 +55,12 @@ Figure: Computer program for web server benchmark results rendering
         y =
         \left\{
         \begin{array}{ll}
-        f - e^{gx-h} & x>x\_{Maximum Safe Load} \\
-        1.0 & x<=x\_{Maximum Safe Load} \\
+        f - e^{gx-h} & x>x\_{MSL} \\
+        1.0 & x<=x\_{MSLS} \\
         \end{array}
         \right.
         $$
-        where $f > 1.0$, $g > 0$, $h > x\_{Maximum Safe Load}$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the response curve in the pass band is not continous with a 100% success rate, keep the results and rerun the benchmark until there are datapoints that show a continuous response curve in the passband.  If after three reruns and there is still no clear passband, stop running more benchmarks and assume that the SUT (system-under-test) has no passband.  If there are less than 100 datapoints within the passband, run the benchmarks again and again until there are over 100 datapoints within the passband.
+        where $f > 1.0$, $g > 0$, $h > x\_{MSL}$, $x$ is the load, and $y$ is the success rate as calculated by a response validator.  This characteristic curve is essentially like a filter response of a low pass filter where the MSL (maximum safe load) is the cut-off frequency.  If the response curve in the pass band is not continous with a 100% success rate, keep the results and rerun the benchmark until there are datapoints that show a continuous response curve in the passband.  If after three reruns and there is still no clear passband, stop running more benchmarks and assume that the SUT (system-under-test) has no passband.  If there are less than 100 datapoints within the passband, run the benchmarks again and again until there are over 100 datapoints within the passband.
 1.  Operate the load generator to apply 1-minute pulsewave towards the SUT for at least 100 attack points throughout the operating range of the system (Lookup "one-in-ten" rule for predictive models).  However, before the pulsewaves are applied, apply a "warm-up load" to the SUT.  This load varies depending on the computer system as observed with SIP.  When in doubt, use a warm-up load of the highest rated load for a duration of 1 minute.  With that, there must be a cooldown duration between each pulsewave.  When in doubt, use a cooldown duration of 1 minute.
     Make sure that the load applied is similar to the load applied to the SIP.  If the load in SIP hits multiple http endpoints simultaneously, then the load generator must hit multiple http endpoints simultaneaously.
 1.  When the load generation is over and the measurements are collected, run the benchmark analysis computer program.
@@ -145,6 +145,16 @@ Figure: Infrastructure for web-app user interaction benchmarking
 1.  First, build the web-app user interaction benchmarking infrastructure as illustrated.  Ensure that the webserver has high throughput, low latency, and within close proximity to the profilers.  Ensure that there at lease more one compute fabric in the browser automata cluster.  For example, if the browser automaton is an alpine-based docker image with `cypress` (an alternative would be `selenium`), the docker containers should be hosted in at least two nodes.  Ideally, use three or more compute fabrics for both the browser automations and the web server.  There should be at least 100 browser automatons.  So with the example of the previous docker image, there should be at least 100 docker containers distributed evenly amongst three nodes.  The web browser should be configured with the screen resolution and network bandwidth of the target device as seen with SIP.  Each single browser automaton should collect at least 100 measurements of each scripted user interaction, and then calculate the percentiles of each time-on-task (see timing metrics below) and success rate of each task.
 1.  Next, operate the webpage benchmarkers and wait until all the measurements are collected.
 1.  When the load generation is over and the measurements are collected, plot the metrics in a histogram (in Python programming language, there is `matplotlib.pyplot`).  If benchmark comparison has to be done, do  hypothesis test (see hypothesis test below).
+
+## Virtual Users
+
+Load generators mentioned above generate rate-based load.  Load can also be measured in *virtual user* units, where each virtual user follows user scenario (also known as a user path or user journey) on the user interface.  Virtual user generators are common benchmarking tool sold in the market or available as open source (like `k6.io`).  Virtual user generator apply load by following a pre-recorded user scenario, which generates requests to the web server.  This user path is played multiple times concurrently until the desired virtual user is achieved.  To calculate the virtual user, use following formula, which is derived from Little's Law:
+$$
+L = a w
+$$
+where...
+-  if this is a web server, then $L$ is the count of virtual users, $a$ is the SIP's rate-based load in request per second, and $w$ is the SIP's server response time
+-  if this is a web-based user interaction, then $L$ is count of virtual users, $a$ is the arrival rate of users to the SIP's web app, and $w$ is the average time-on-task in the SIP's web app.
 
 # Performance Objectives
 
