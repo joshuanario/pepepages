@@ -148,13 +148,13 @@ Figure: Infrastructure for web-app user interaction benchmarking
 
 ## Virtual Users
 
-Load generators mentioned above generate rate-based load.  Load can also be measured in *virtual user* units, where each virtual user follows user scenario (also known as a user path or user journey) on the user interface.  Virtual user generators are common benchmarking tool sold in the market or available as open source (like `k6.io`).  Virtual user generator apply load by following a pre-recorded user scenario, which generates requests to the web server.  This user path is played multiple times concurrently until the desired virtual user is achieved.  To calculate the virtual user, use following formula, which is derived from Little's Law:
+Load generators mentioned above generate rate-based load.  Load can also be measured in *virtual user* units, where each virtual user follows user scenario (also known as a user path or user journey) on the user interface.  Virtual user generators are common benchmarking tool sold in the market or available as open source (like `k6.io`).  Virtual user generator apply load by following a pre-recorded user scenario, which generates requests to the web server.  This user path is played multiple times concurrently until the desired virtual user is achieved.  Virtual user generators are great to simulate intense traffic like "Ophrah events," which are sudden increase in user traffic due to an endorsement from a popular figure (like Oprah, who is notorious to bring offline e-commerce sites when she endorses books or products).  To calculate the virtual user, use following the formula, which is derived from Little's Law:
 $$
 L = a w
 $$
 where...
--  if this is a web server, then $L$ is the count of virtual users, $a$ is the SIP's rate-based load in request per second, and $w$ is the SIP's server response time
--  if this is a web-based user interaction, then $L$ is count of virtual users, $a$ is the arrival rate of users to the SIP's web app, and $w$ is the average time-on-task in the SIP's web app.
+-  if this is a web service, then $L$ is the count of virtual users, $a$ is the SIP's rate-based average hourly load in request per second, and $w$ is the SIP's server average hourly response time
+-  if this is a web-based user interaction, then $L$ is count of virtual users, $a$ is the average hourly arrival rate of users to the SIP's web app, and $w$ is the average hourly time-on-task in the SIP's web app.
 
 # Performance Objectives
 
