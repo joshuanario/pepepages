@@ -110,7 +110,7 @@ Once all the sampled CPU utilization values are collected, two hypothesis tests 
 
 # Webpage Benchmark
 
-Measures first contentful paint (FCP), largest contentful paint (LCP), first meaningful paint (FMP), time-to-interactive (TTI), time-to-first-byte (TTFB, also similar to server response time), and Javascript bootup time (also know as Javascript execution time).
+Measures first contentful paint (FCP), largest contentful paint (LCP), first meaningful paint (FMP), time-to-interactive (TTI), time-to-first-byte (TTFB, also similar to server response time), and Javascript bootup time (aka Javascript execution time).
 
 ## How-To
 
@@ -135,7 +135,7 @@ Measures time-on-tasks and success rates (success are dictated by user experienc
 
 ```mermaid
 graph LR
-    A[Multiple web browser automatons] -- Retrieve webapp --> B[Web Server]
+    A[Multiple web browser automatons] -- Retrieve web app --> B[Web Server]
     A -- Automate web-app task --> A
     A -- Collect measurement --> C(Measurement Store)
 ```
@@ -144,11 +144,11 @@ Figure: Infrastructure for web-app user interaction benchmarking
 
 1.  First, build the web-app user interaction benchmarking infrastructure as illustrated.  Ensure that the webserver has high throughput, low latency, and within close proximity to the profilers.  Ensure that there at lease more one compute fabric in the browser automata cluster.  For example, if the browser automaton is an alpine-based docker image with `cypress` (an alternative would be `selenium`), the docker containers should be hosted in at least two nodes.  Ideally, use three or more compute fabrics for both the browser automations and the web server.  There should be at least 100 browser automatons.  So with the example of the previous docker image, there should be at least 100 docker containers distributed evenly amongst three nodes.  The web browser should be configured with the screen resolution and network bandwidth of the target device as seen with SIP.  Each single browser automaton should collect at least 100 measurements of each scripted user interaction, and then calculate the percentiles of each time-on-task (see timing metrics below) and success rate of each task.
 1.  Next, operate the webpage benchmarkers and wait until all the measurements are collected.
-1.  When the load generation is over and the measurements are collected, plot the metrics in a histogram (in Python programming language, there is `matplotlib.pyplot`).  If benchmark comparison has to be done, do  hypothesis test (see hypothesis test below).
+1.  When the load generation is over and the measurements are collected, plot the metrics in a histogram (in Python programming language, there is `matplotlib.pyplot`).  If benchmark comparison has to be done, do a hypothesis test (see hypothesis test below).
 
 ## Virtual Users
 
-Load generators mentioned above generate rate-based load.  Load can also be measured in *virtual user* units, where each virtual user follows user scenario (also known as a user path or user journey) on the user interface.  Virtual user generators are common benchmarking tool sold in the market or available as open source (like `k6.io`).  Virtual user generator apply load by following a pre-recorded user scenario, which generates requests to the web server.  This user path is played multiple times concurrently until the desired virtual user is achieved.  Virtual user generators are great to simulate intense traffic like "Ophrah events," which are sudden increase in user traffic due to an endorsement from a popular figure (like Oprah, who is notorious to bring offline e-commerce sites when she endorses books or products).  To calculate the virtual user, use following the formula, which is derived from Little's Law:
+Load generators mentioned above generate rate-based load.  Load can also be measured in *virtual user* units, where each virtual user follows a user scenario (aka user path or user journey) on the user interface.  Virtual user generators are common benchmarking tool sold in the market or available as open source tools (like `k6.io`).  Virtual user generator apply load by following a pre-recorded user scenario, which generates requests to the web server.  This user path is played multiple times concurrently until the desired counts of virtual users is achieved.  Virtual user generators are great to simulate intense traffic pattenrs like "Ophrah events," which are sudden increase in user traffic due to an endorsement from a popular figure (like Oprah, who is notorious to bring offline e-commerce sites when she endorses books and other products).  To calculate the virtual user count, use following the formula, which is derived from Little's Law:
 $$
 L = a w
 $$
@@ -213,6 +213,7 @@ flowchart TD
 ```
 
 Figure: Computer program for one-sample hypothesis test
+
 Here are the Python functions that I used for these test:
 
 1.  D'Agostino $K^2$: `scipy.stats.normaltest`
@@ -249,12 +250,13 @@ flowchart TD
 ```
 
 Figure: Computer program for one-sample unpaired hypothesis test
+
 Here are the Python functions that I used for these test:
 
 1.  D'Agostino $K^2$: `scipy.stats.normaltest`
 2.  Levene: `scipy.stats.levene`
 3.  Student-t: `scipy.stats.ttest_ind`
-4.  Mann-Whiney-U: `scipy.stats.mannwhitneyu`
+4.  Mann-Whitney-U: `scipy.stats.mannwhitneyu`
 
 ## Degenerate Distributions
 
@@ -299,7 +301,7 @@ There are three notable timing thresholds to know stated from human behavior res
 
 # TCP slow start
 
-Understanding TCP congestion control (aka slow-start) is critical in performance tuning modern webapps.  Imagine an algorithm trying to send a file down a transport channel without knowing its file size.  The algorithm starts with a small chunk of the file, and then doubles the size of the next chunk to be sent if the previous file was sent successfully.  Slow-start is not a concern for streaming of large data as the data transport would have optimized within the early phase of the data transport.  Slow start is a main concern for bursty data transfers like the download of web assets, and speed of the network is not a great remedy in overcoming the speed degradation that comes with slow-start.  The best way to reduce the speed degradation caused by slow-start is to lower the file size.  Decreasing the file size drastically reduces the number of round-trips.  Nowadays, Javascript app builders (like `webpack`) will even raise a warning when the build output is over **244 kilobytes** and is capable of disassembly of large web assets into smaller pieces with the hopes of assembly during page loads in the browser's runtime.  Some webpage benchmarking tools like Google Chrome's `lighthouse` will raise a warning if the content is not compressed (using a compression algorithm like `gzip`).
+Understanding TCP congestion control (aka slow-start) is critical in performance tuning modern web apps.  Imagine an algorithm trying to send a file down a transport channel without knowing its file size.  The algorithm starts with a small chunk of the file, and then doubles the size of the next chunk to be sent if the previous file was sent successfully.  Slow-start is not a concern for streaming of large data as the data transport would have optimized within the early phase of the data transport.  Slow start is a main concern for bursty data transfers like the download of web assets, and speed of the network is not a great remedy in overcoming the speed degradation that comes with slow-start.  The best way to reduce the speed degradation caused by slow-start is to lower the file size.  Decreasing the file size drastically reduces the number of round-trips.  Nowadays, Javascript app builders (like `webpack`) will even raise a warning when the build output is over **244 kilobytes** and is capable of disassembly of large web assets into smaller pieces with the hopes of assembly during page loads in the browser's runtime.  Some webpage benchmarking tools like Google Chrome's `lighthouse` will raise a warning if the content is not compressed (using a compression algorithm like `gzip`).
 
 # Queueing Theory
 
@@ -313,8 +315,8 @@ Amdahl's Law and Gustafson's law essentially dictates that a properly utilized c
 
 # Database Tuning
 
-Invest in hiring a database administrators (DBA).  Database performance tuning ideally should involve DBAs.  Database technologies requiree unique technical expertise that an average application developer do not possess.  Also invest in database performance monitors and profilers.  Database servers (and also any data persistence technology) typically face the most latencies in execution times due to read/write operations to the disks.  Web server typically have the process spin up and hydrate the binaries into RAM for faster response times, but databases (or any datastore) would require additional computer workloads in reading/writing to the disk.  Once a DBA is on board, common performance objectives are:
--  Execution plan optimization (Reduce execution times of most commonly used laggy queries, etc.)
+Invest in hiring a database administrator (DBA).  Database performance tuning ideally should involve a DBA.  Database technologies require unique technical expertise that an average application developer do not possess.  Also invest in database performance monitors and profilers.  Database servers (and also any data persistence technology) typically face the most latencies in execution times due to read/write operations to the disks.  Web servers typically have the computer process spin up and hydrate the binaries into RAM for faster response times, but databases (or any datastore) would require additional computer workloads in reading/writing to the disk.  Once a DBA is on board, common performance objectives are:
+-  Execution plan optimization (Reduce execution times of most commonly used laggy queries, for example.)
 -  Capacity planning (Will doubling the volume of the data in the database lower the success rate of the whole computer system?)
 -  Soak test (Is the database server going to OOM, or have its CPU over-utilized?)
 
