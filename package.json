@@ -9,12 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mermaid-js/mermaid-cli": "8.13",
     "canvas": "^2.9.1",
     "mammoth": "^1.4.21",
     "next": "12.1.5",
     "normalize.css": "^8.0.1",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "rehype-mathjax": "^4.0.2",
+    "rehype-stringify": "^9.0.3",
+    "remark": "13.0.0",
+    "remark-embed-images": "^3.1.0",
+    "remark-gfm": "^3.0.1",
+    "remark-math": "^5.1.1",
+    "remark-mermaid": "^0.2.0",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "to-vfile": "^7.2.3",
+    "unified": "^10.1.2"
   },
   "devDependencies": {
     "@types/node": "17.0.24",

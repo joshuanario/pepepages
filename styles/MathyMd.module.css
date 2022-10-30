@@ -1,0 +1,54 @@
+#container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: darkgray;
+  color: black;
+  padding: 1em 0;
+  margin: 0;
+  font-family: 'Tinos', serif;
+  font-size: 16pt;
+}
+
+#wrapper {
+  width: 54%;
+  height: 97%;
+  margin: 0 auto;
+  padding: 0;
+  overflow: auto;
+}
+@media screen and (max-width: 1632px){
+  #wrapper {
+    width: 100%;
+    max-width: 816px;
+  }
+}
+
+#content {
+  position: relative;
+  width: 100%;
+  max-width: 816px;
+  margin: 1%;
+  padding: 0;
+}
+
+#content a{
+  color: yellow;
+}
+
+#content a:hover{
+  color: yellowgreen;
+  font-style: oblique;
+  cursor: pointer;
+}
+
+#content a{
+  color: orange;
+  font-style: italic;
+}
+
+#content img {
+  width: 100%;
+}
