@@ -89,3 +89,12 @@ In this case study, Billy is a 16 year old male that grew up exposed to repeated
 
 ![](./confused-krab.png)
 **Role Confusion**:  Billy does not participate in any activity in school or anything outside of the house.  Billy has played soccer, but that is because his foster parents and birth parents encouraged him.  Billy is looking for jobs to help in the house, but he only applied for jobs where his friends are working.  All of Billy's classmates are taking the ACT/SAT exams seriously, but Billy has showed no indication of taking college placement seriously.  As Erikson would put it, Billy is having an identity crisis and has no direction of what to do with his life despite being biologically a young adult.
+
+# Trauma-informed Parenting
+
+![](./bivalve-spongebob.gif)
+In conclusion, we learned that:
+
+-  foster care involves being trauma-aware and helping foster children cope with trauma
+-  foster care should be temporary and should facilitate co-parenting need to gratify the belonging needs of the foster child and birth parents
+-  foster children are at high risk being developedly regressed and requires additional parenting energy compared to properly developed children
