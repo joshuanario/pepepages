@@ -84,10 +84,10 @@ In this case study, Billy is a 16 year old male that grew up exposed to repeated
 
 
 ![](./lazy-day-spongebob.gif)
-**Inferiority**: Billy does not value hard work in comparison to his properly developed peers.  When it comes to chores, Billy does the bare minimum to do chores.  For example, Billy will only clean his room to avoid the threat of insect infestation in his room, but his room will still have weeks worth of dishes, food, and trash.  Billy will avoid schoolwork to the point of failing the classes.  Billy won't even ask for help with schoolwork because he knows tutoring takes too much of his time.
+**Inferiority**: Billy does not value hard work in comparison to his properly developed peers.  When it comes to chores, Billy does the bare minimum to do chores.  For example, Billy will only clean his room to avoid the threat of insect infestation in his room, but his room will still have weeks worth of dishes, food, and trash.  Billy has a habit of hoarding food in his bedroom, which is attributed to the history of food insecurity.  Billy avoids schoolwork to the point of failing his classes.  Billy won't even ask for help with schoolwork because he knows tutoring takes too much of his time.  Billy is not willing to do any hardwork that has no instant gratification.
 
 ![](./confused-krab.png)
-**Role Confusion**:  Billy does not participate in any activity in school or anything outside of the house.  Billy has played soccer, but that is because his foster parents and birth parents encouraged him.  Billy is looking for jobs to help in the house, but he only applied for jobs where his friends are working.  All of Billy's classmates are taking the ACT/SAT exams seriously, but Billy has showed no indication of taking college placement seriously.  As Erikson would put it, Billy is having an identity crisis and has no direction of what to do with his life despite being biologically a young adult.
+**Role Confusion**:  As Erikson would put it, Billy is having an identity crisis and has no direction of what to do with his life despite being biologically a young adult.  Billy does not participate in any activity in school or anything outside of the house.  Billy has played soccer, but that is because his foster parents and birth parents encouraged him.  All of Billy's classmates are taking the ACT/SAT exams seriously, but Billy has showed no indication of taking college placement seriously.  Billy is not sure of what he will do when he graduates high school.
 
 # Trauma-informed Parenting
 
@@ -95,5 +95,6 @@ In this case study, Billy is a 16 year old male that grew up exposed to repeated
 In conclusion, we learned that:
 
 -  foster care involves being trauma-aware and helping foster children cope with trauma
--  foster care should be temporary and should facilitate co-parenting need to gratify the belonging needs of the foster child and birth parents
--  foster children are at high risk being developedly regressed and requires additional parenting energy compared to properly developed children
+-  foster care should facilitate co-parenting in order to satisfy belonging needs of the foster child and birth parents
+-  foster care should be temporary, should facilitate co-parenting, and ultimately lead to reunification at some point in the future
+-  foster parents can break the cycle of generational trauma when the foster child self-actualizes and catches up with their proper developmental age through trauma-focused therapies
