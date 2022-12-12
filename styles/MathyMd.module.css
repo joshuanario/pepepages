@@ -36,6 +36,7 @@
 
 #content a{
   color: yellow;
+  font-style: italic;
 }
 
 #content a:hover{
@@ -44,11 +45,11 @@
   cursor: pointer;
 }
 
-#content a{
-  color: orange;
-  font-style: italic;
-}
-
 #content img {
   width: 100%;
+}
+
+#content table {
+    table-layout: fixed;
+    width: 100%;
 }
