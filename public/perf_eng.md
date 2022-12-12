@@ -306,12 +306,12 @@ Understanding TCP congestion control (aka slow-start) is critical in performance
 # Queueing Theory
 
 Amdahl's Law and Gustafson's law essentially dictates that a properly utilized computing machine should have CPU utilizations between 30% and 70% when processing a long queue of multiple computer task requests.  Computer systems that can tolerate latencies can operate as high up as 80% CPU utilization.  An under-utilized CPU means that the computing machine's performance specification is an over-kill for the load that it was tested, which is a main concern for financial reasons.
-| CPU Utilization | Queue time | Latency |
+| CPU Utilization (%) | Queue time | Latency |
 | --- | --- | --- |
-| $ U \lt 30%$ | None | Optimal |
-| $ 70% \ge U \ge 30%$ | Short | Optimal |
-| $ U \gt 70%$ | Long | Excessive |
-| $ U \gt 80%$ | Extremely Long | Very Excessive |
+| $ U \lt 30$ | None | Optimal |
+| $ 70 \ge U \ge 30$ | Short | Optimal |
+| $ U \gt 70$ | Long | Excessive |
+| $ U \gt 80$ | Extremely Long | Very Excessive |
 
 # Database Tuning
 
