@@ -35,8 +35,7 @@ It's important for parents/guardians to address their children's cycles of needs
 
 ## Self-regulation
 
-As the child ages and matures, self-regulation occurs.
-
+As the child ages and matures, self-regulation occurs.  A child learns the methods of intervention from the adults.
 
 ## Maslow's Theory of Human Motivation
 ![](./maslow-pyramid.gif)
