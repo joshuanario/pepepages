@@ -1,11 +1,11 @@
 # What I learned in foster parent school is...
 
-*Disclaimer: All images in this work are not our work.  Copyright belongs to all respectful owners.*
+*Disclaimer: All images in this work are not our work.  Copyright belongs to all respective owners.*
 
 ![](./spongebob-whatilearned.jpeg)
 
 - Cycle of Needs
-- Maslows Hierarchy of Needs
+- Maslow's Hierarchy of Needs
 - Erikson's Stages of Development
 - Trauma-informed Parenting
 
@@ -31,13 +31,13 @@
 ## Attachment
 ![](./spongebob-squidward-attached.gif)
 
-It's important for parents/guardians to address their children's cycles of needs in order for the child to form an attachment with the parents/guardiants.
+It's important for parents/guardians to address their children's cycles of needs in order for the child to form an attachment with the parents/guardians.
 
 ## Self-regulation
 
 As the child ages and matures, self-regulation occurs.  A child learns the methods of intervention from the adults.
 
-## Maslow's Theory of Human Motivation
+# Maslow's Theory of Human Motivation
 ![](./maslow-pyramid.gif)
 Per Maslow's theory, human basic needs can be modelled as being stacked in a pyramid.  See Maslow's original paper on his theory of human motivation [here](https://psychclassics.yorku.ca/Maslow/motivation.htm).
 
@@ -47,7 +47,7 @@ Per Maslow's theory, human basic needs can be modelled as being stacked in a pyr
 1.  Esteem Needs
 1.  Self-actualization Needs
 
-### Self-actualization
+## Self-actualization
 
 To quote Maslow:
 > The need for self-actualization. -- Even if all these needs are satisfied, we may still often (if not always) expect that a new discontent and restlessness will soon develop, unless the individual is doing what he is fitted for. A musician must make music, an artist must paint, a poet must write, if he is to be ultimately happy. What a man can be, he must be. This need we may call self-actualization.
