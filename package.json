@@ -2,10 +2,6 @@
   "name": "pepepages",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "npm": "==6.14",
-    "node": "==14.21"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build && next export",
@@ -14,7 +10,7 @@
   },
   "dependencies": {
     "@mermaid-js/mermaid-cli": "8.13",
-    "canvas": "^2.9.1",
+    "canvas": "^2.11.0",
     "mammoth": "^1.4.21",
     "next": "12.1.5",
     "normalize.css": "^8.0.1",
