@@ -1,7 +1,7 @@
 import React from 'react'
 import NoisyScreen from './NoisyScreen'
 import PP from './Dichotomy'
-import styles from '../../styles/Home.module.css'
+import styles from '../../styles/PepeMantra.module.css'
 
 
 let up = Math.random() >= 0.4
