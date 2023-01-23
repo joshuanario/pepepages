@@ -12,7 +12,7 @@ const PastLifePage: NextPage<MyProps> = ({ moreinfo }: MyProps ) => {
   return (
     <>
       <Head>
-        <title>In a past life</title>
+        <title>In a past life | joshuanario.com</title>
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <PastLife moreinfo={moreinfo} videoUrl='/sdsf_ch09.ogg'/>
