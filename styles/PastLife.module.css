@@ -70,3 +70,19 @@
   color: orange;
   font-style: italic;
 }
+
+#videoContainer {
+  display: block;
+  position: relative;
+}
+
+#play {
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-left: 100px solid white;
+  border-bottom: 50px solid transparent;
+}
