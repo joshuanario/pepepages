@@ -1,4 +1,4 @@
-import path from 'path'
+import path, { join } from 'path'
 import fs from 'fs'
 import React from 'react'
 import type { NextPage } from 'next'
@@ -9,22 +9,28 @@ type MyProps = {
 }
 
 const AviariaPage: NextPage<MyProps> = ({ legend }: MyProps ) => {
+    const imgRef = React.createRef<HTMLImageElement>()
     React.useEffect(() => {
+        if (!imgRef?.current) {
+            return
+        }
+        imgRef.current.click()
+    }, [imgRef])
+    const narrate = () => {
         if (typeof window !== 'undefined') {
             if ('speechSynthesis' in window) {
                 let msg = new SpeechSynthesisUtterance()
                 msg.rate = 0.1
                 msg.text = legend
                 msg.lang = 'en'
-                window.speechSynthesis.speak(msg)
-                return () => {
-                    window.speechSynthesis.cancel()
+                if (!window.speechSynthesis.speaking) {
+                    window.speechSynthesis.speak(msg)
                 }
             }else{
                 alert(legend)
             }
         }
-    })
+    }
     return (
         <>
         <Head>
@@ -36,6 +42,8 @@ const AviariaPage: NextPage<MyProps> = ({ legend }: MyProps ) => {
             alt='lore legend'
             width={1261}
             height={901}
+            onMouseMove={e => narrate()}
+            onTouchStart={e => narrate()}
         />
         </>
     )

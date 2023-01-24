@@ -26,6 +26,7 @@ const Home: NextPage = () => {
           <h1>joshuanario.com</h1>
           <ul>
             <li><MyLink href='art'>Interactive HTML Art</MyLink></li>
+            <li><MyLink href='fallenstars'>crystalized hearts of fallen stars</MyLink></li>
             <li><MyLink href='resume'>Resume, Computer Technology Professional</MyLink></li>
             <li><MyLink href='perfeng'>Performance Engineering Manifesto</MyLink></li>
             <li><MyLink href='fosterparent'>Foster Parent School Presentation</MyLink></li>
