@@ -14,7 +14,7 @@ const AviariaPage: NextPage<MyProps> = ({ legend }: MyProps ) => {
         if (!imgRef?.current) {
             return
         }
-        imgRef.current.click()
+        narrate()
     }, [imgRef])
     const narrate = () => {
         if (typeof window !== 'undefined') {
