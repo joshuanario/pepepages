@@ -4,13 +4,14 @@ import 'normalize.css/normalize.css'
 
 type MyProps = {
   moreinfo: string
-  videoUrl: string
+  videoUrlOgg: string
+  videoUrlM4v: string
 }
 
 const PastLife: React.FC<MyProps> = (props: MyProps) => {
   const [isPlaying, setIsPlaying] = React.useState(false)
   const videoRef = React.createRef<HTMLVideoElement>()
-  const { moreinfo, videoUrl } = props
+  const { moreinfo, videoUrlOgg, videoUrlM4v } = props
   const togglePlay = () => {
     if (!videoRef?.current) {
       return
@@ -34,8 +35,9 @@ const PastLife: React.FC<MyProps> = (props: MyProps) => {
           <p>Disclaimer: Viewer discretion is advised due to comical violence and mild gore.</p>
         </div>
         <div id={styles.videoContainer}>
-          <video width="100%" height="100%" ref={videoRef} controls onPause={e => setIsPlaying(false)} onPlay={e => setIsPlaying(true)} >
-            <source src={videoUrl} type="video/ogg" />
+          <video width="100%" height="100%" ref={videoRef} controls onPause={e => setIsPlaying(false)} onPlay={e => setIsPlaying(true)} playsInline>
+            <source src={videoUrlOgg} type="video/ogg" />
+            <source src={videoUrlM4v} type="video/mp4" />
           </video>
           {!isPlaying && <div id={styles.play} onClick={e => togglePlay()}/>}
         </div>
