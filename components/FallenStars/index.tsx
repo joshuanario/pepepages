@@ -39,7 +39,9 @@ const FallenStars: React.FC<MyProps> = (props: MyProps) => {
   return <div
     style={{
       width: '100vw',
-      height: '100vh'
+      height: '100vh',
+      background: `url(/BloomFestivalpixelclouds.web.jpg) no-repeat center center fixed`,
+      backgroundSize: 'cover'
     }} 
     onClick={ e => {
       cyclePics()
