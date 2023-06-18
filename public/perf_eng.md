@@ -96,7 +96,7 @@ Once all the sampled memory consumption values are collected and sorted in chron
     $$
     P = \frac{s + 1}{n + 2}
     $$
-    where $n$ is equivalent to $s$.  Note of any depletion state instances with probabilities greater than or equal ot 0.9 as that is a huge risk for a memory leak.  Also note that the lowest possible value here is 0.5.
+    where $n$ is equivalent to $s$.  Note of any depletion state instances with probabilities greater than or equal to 0.9 as that is a huge risk for a memory leak.  Also note that the lowest possible value here is 0.5, which indicates that there is no evidence of a memory leak.
 *   Average memory consumption rate: use the trapezoidal rule method in a computer program (like Python programming language) to compute the area under the curve of the derivative function within the duration of the depletion state instance, and then divide that value by the duration of the depletion state instance.  Main concern here is to make sure the computer system is not going to cause an OOM (out-of-memory event) within hours as opposed to days.  Generally speaking, this value should be low if there is proper memory management (like garbage collection) that it would take at least days to OOM the computing machine under the load.
 
 ### CPU Utilization Analysis
