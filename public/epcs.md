@@ -57,7 +57,7 @@ sequenceDiagram
     HSM->>EHR: Digitially signed electronic prescription
     EHR->>Pharmacy Software: Transmit digitally signed electronic prescription
     Pharmacy Software->>EHR: Transmission success
-    EHR->>Practioner: Electronic prescription success
+    EHR->>Practitioner: Electronic prescription success
 ```
 
 Learn more about reference monitor [here](https://csrc.nist.gov/glossary/term/reference_monitor).
