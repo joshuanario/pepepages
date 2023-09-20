@@ -13,7 +13,7 @@ Generally speaking, electronic healthcare record (EHR) software in the market ty
 
 # Identity Proofing
 
-The latest revision of EPCS codification, [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311), references *Electronic Authentication Guideline* (or [NIST SP 800–63–1](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-63-1.pdf)) to describe the requirements around identity proofing.  In a nutshell, it mandates the use of trusted entities that can verify a registered human user (whose enrollment may involve a process like a face-to-face interview) and that can also operate special security token services known as credential service provider (CSP) that can issue security tokens for the human user that have claims pertaining to the level of assurance of the user's digital identity, which are issued in varying levels and types (like IAL and LOA).  Identity proofing solves the problem of impostors crafting fraudulent prescriptions for additive yet legal substances, which are then sold through illicit channels and are used for non-medicinal purposes.  To be able to prescribe medicine would require the person to be registered with the DEA.  This registration is a necessity for the electronic presciption as part of the identity proofing process.
+The latest revision of EPCS codification, [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311), references *Electronic Authentication Guideline* (or [NIST SP 800–63–1](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-63-1.pdf)) to describe the requirements around identity proofing.  In a nutshell, it mandates the use of trusted entities that can verify a registered human user (whose enrollment may involve a process like a face-to-face interview) and that can also operate special security token services known as credential service provider (CSP) that can issue security tokens for the human user that have claims pertaining to the level of assurance of the user's digital identity, which are issued in varying levels and types (like IAL and LOA).  Identity proofing solves the problem of impostors crafting fraudulent prescriptions for additive yet legal substances, which are then sold through illicit channels and are used for non-medicinal purposes.  To be able to prescribe medicine would require the person to be registered with the DEA.  This registration is a necessity for the electronic prescription as part of the identity proofing process.
 
 ```mermaid
 sequenceDiagram
@@ -40,7 +40,7 @@ Most CSP vendors fulfill this requirement by complementing the username/password
 
 # Digital Signature
 
-An EPCS application must be configured to have proper PKI (public-key infrastructure) setup and hardware security modules (HSM) in order to digitally sign electronic prescriptions.  The HSMs are cryptographic devices that are validated against the US federal standard outlined in [FIPS 140-2](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf).  The HSMs protect the digital signing keys used to digitally sign the electronic prescriptions.  This function adds tamper-protection to the electronic prescription in order to deter adversary-in-the-middle attackers from intercepting the electronic prescription with the intention of modifying the script for illicit or non-medicinal purposes.  Of course, digitally signature are meaning if they are not validated.  A pharmacy tech at pharmacies like Walgreens or CVS should be using EPCS compliant software that validates digitially signed electronic prescription as stated in [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311).
+An EPCS application must be configured to have proper PKI (public-key infrastructure) setup and hardware security modules (HSM) in order to digitally sign electronic prescriptions.  The HSMs are cryptographic devices that are validated against the US federal standard outlined in [FIPS 140-2](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf).  The HSMs protect the digital signing keys used to digitally sign the electronic prescriptions.  This function adds tamper-protection to the electronic prescription in order to deter adversary-in-the-middle attackers from intercepting the electronic prescription with the intention of modifying the script for illicit or non-medicinal purposes.  Of course, digitally signatures are meaningless if they are not validated.  A pharmacy tech at pharmacies like Walgreens or CVS should be using EPCS compliant software that validates digitally signed electronic prescription as stated in [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311).
 
 
 ```mermaid
@@ -53,8 +53,8 @@ sequenceDiagram
     CSP->>EHR: Acquire 2FA security tokens along with identity proof claims
     EHR->>HSM: Request digital signature on electronic prescription
     HSM->>Reference Monitor: Authorize for digital signing
-    Reference Monitor->>HSM: Authorization approvedd
-    HSM->>EHR: Digitially signed electronic prescription
+    Reference Monitor->>HSM: Authorization approved
+    HSM->>EHR: Digitally signed electronic prescription
     EHR->>Pharmacy Software: Transmit digitally signed electronic prescription
     Pharmacy Software->>EHR: Transmission success
     EHR->>Practitioner: Electronic prescription success
