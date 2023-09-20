@@ -33,6 +33,7 @@ const Home: NextPage = () => {
             <li><MyLink href='aviaria'>Legend of Aviaria</MyLink></li>
             <li><MyLink href='pastlife'>In a past life...</MyLink></li>
             <li><MyLink href='wolvesinsheepskin'>wolves in sheepskin</MyLink></li>
+            <li><MyLink href='epcs'>EPCS software engineering</MyLink></li>
           </ul>
       </nav>
     </>
