@@ -52,7 +52,7 @@ export async function getStaticProps() {
       .replace(/\\left{/g, `\\left\\{`)
       .replace(/r\\_{i}/g, `r_{i}`)
       .replace(/r\\_{j}/g, `r_{j}`)
-      .replace(/E\\[r]/g, `E[r]`)
+      .replace(/E\\\[r\]/g, `E[r]`)
       .replace(/l\\_{rms}/g, `l_{rms}`)
       .replace(/sum\\_{/g, `sum_{`)
       .replace(/p\\_{n}/g, `p_{n}`)

@@ -68,7 +68,7 @@ Figure: Computer program for web server benchmark results rendering
         \left\{
         \begin{array}{ll}
         \infty & 100<=k \\
-        Re(-W(-e^{ln(k!p_{n})})) & 0<k<100 \\
+        Re(-W(-k!p_{n})) & 0<k<100 \\
         \end{array}
         \right.
         $$
