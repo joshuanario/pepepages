@@ -48,11 +48,16 @@ export async function getStaticProps() {
 
     const mmdcontentHack = await read(path.resolve(process.cwd(), '_mmd', 'perf_eng.md'))
     fs.writeFileSync(path.resolve(process.cwd(), '_mmd', 'perf_eng.md'), 
-      String(mmdcontentHack).replace(`\\left{`, `\\left\\{`)
-      .replace(`x\\_{MSL}`, `x_{MSL}`).replace(`x\\_{MSL}`, `x_{MSL}`)
-      .replace(`x\\_{MSL}`, `x_{MSL}`).replace(`x\\_{MSL}`, `x_{MSL}`).replace(`x\\_{MSL}`, `x_{MSL}`)
-      .replace(`r\\_{i}`, `r_{i}`).replace(`r\\_{i}`, `r_{i}`)
-      .replace(`r\\_{j}`, `r_{j}`).replace(`E\\[r]`, `E[r]`))
+      String(mmdcontentHack)
+      .replace(/\\left{/g, `\\left\\{`)
+      .replace(/r\\_{i}/g, `r_{i}`)
+      .replace(/r\\_{j}/g, `r_{j}`)
+      .replace(/E\\[r]/g, `E[r]`)
+      .replace(/l\\_{rms}/g, `l_{rms}`)
+      .replace(/sum\\_{/g, `sum_{`)
+      .replace(/p\\_{n}/g, `p_{n}`)
+      .replace(/0\\<k<100/g, `0<k<100`)
+      )
 
     const mmdcontent = await read(path.resolve(process.cwd(), '_mmd', 'perf_eng.md'))
     const file = await unified()
