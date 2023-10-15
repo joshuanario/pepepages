@@ -25,8 +25,8 @@ flowchart TD
     A[Start] --> B[Query measurements]
     B --> db
     db --> B
-    B --> C[Compute response time characteristic curves]
-    B --> D[Compute success rate characteristic curve]
+    B --> C[Compute Fourier analysis results]
+    B --> D[Compute Poisson analysis results]
     D --> sp
     sp --> D
     C --> E[Render and save results]
@@ -67,7 +67,7 @@ Figure: Computer program for web server benchmark results rendering
         \lambda =
         \left\{
         \begin{array}{ll}
-        \infty & 100<=k \\
+        \infty & 100 \leq k \\
         Re(-W(-k!p_{n})) & 0<k<100 \\
         \end{array}
         \right.
@@ -81,7 +81,7 @@ Figure: Computer program for web server benchmark results rendering
         \end{array}
         \right.
         $$
-        where $k$ is the count of failure events (for example count of http 5XX status codes), $n$ is the count of all events (for example count of all http packets of any status code), and $z$ is the failure rate (in the given examples $z=k/n$) observed in a single benchmark trial which serves as the $p$ value in a binomial distribution when Poisson limit theorem is applied.  The results ($p_{n}$, $\lambda$, and $f$) must be computed.  Note that:
+        where $k$ is the count of failure events (for example count of http 5XX status codes), $n$ is the count of all events (for example count of all http responses of any status code), and $z$ is the failure rate (in the given examples $z=k/n$) observed in a single benchmark trial which serves as the $p$ value in a binomial distribution when Poisson limit theorem is applied.  The results ($p_{n}$, $\lambda$, and $f$) must be computed.  Note that:
         $$
         s = 1 - f
         $$
@@ -95,14 +95,16 @@ Figure: Computer program for web server benchmark results rendering
 
 ### Compare Fourier Analysis Results
 
-Simply do a scalar comparison of the rms values of the two spectral densities to see which one is more performant.  Visually inspecting the spectral density is also a must.  Note thing at low load but with high latencies are likely to be the "cold" states of the system while a consitent band spanning the middle zone is most likely the "warm" state.  If there are multiple values to compare from multiple benchmark trials, run hypothesis tests. (see hypothesis test below)
+Simply do a scalar comparison of the rms values of the two spectral densities to see which one is more performant.  Visually inspecting the spectral density is also a must.  Note datapoints at low load but with high latencies are likely to be operating at the "cold" states of the system while a consitent band spanning the middle zone is most likely operating at the "warm" state.  If there are multiple values to compare from multiple benchmark trials, run hypothesis tests. (see hypothesis test below)
 
-### Compare Success Rate Benchmark
+### Compare Poisson Analysis Results
 
 Do not use a single value of $f$.  Either do one of the following:
 
 1.  Gather averages of $f$ and do a scalar comparison of the averages.
 1.  With multiple values to compare from multiple benchmark trials, run hypothesis tests. (see hypothesis test below)
+
+Note highly visited and very critical systems should have failures rates less than $1\mathrm{e}{-4}$.  Otherwise, $1\mathrm{e}{-3}$ is a good starting point.
 
 # Web Server Soak Test
 
