@@ -1,2 +1,2 @@
 # pepepages
-www.joshuanario.com
+https://joshuanario.com
