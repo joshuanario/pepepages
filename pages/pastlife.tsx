@@ -8,7 +8,7 @@ type MyProps = {
   moreinfo: string
 }
 
-const tagline = `Siege on Lochaven Hills - Oppose Application Z2000041: Rezoning 30 Acres at Guess & Latta Roads`
+const tagline = `Save Lochaven Hills Neighborhood.  Oppose Application Z2000041: Rezoning 30 Acres at Guess & Latta Roads`
 const PastLifePage: NextPage<MyProps> = ({ moreinfo }: MyProps ) => {
   return (
     <>
