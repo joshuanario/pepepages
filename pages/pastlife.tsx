@@ -19,6 +19,7 @@ const PastLifePage: NextPage<MyProps> = ({ moreinfo }: MyProps ) => {
         <meta property='og:type' content='website' />
         <meta property='og:title' content='Siege on Lochaven Hills' key='title' />
         <meta property='og:description' content={tagline} key='description' />
+			  <meta property='og:image' content='/sdsf_thumbnail.png' key='image' />
       </Head>
       <PastLife moreinfo={moreinfo} videoUrlMp4='/sdsf_ch09.mp4' videoUrlOgg='/sdsf_ch09.ogg' videoUrlM4v='/sdsf_ch09.m4v'/>
     </>
