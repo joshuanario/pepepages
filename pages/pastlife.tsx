@@ -8,12 +8,18 @@ type MyProps = {
   moreinfo: string
 }
 
+const tagline = `Save Lochaven Hills Neighborhood.  Oppose Application Z2000041: Rezoning 30 Acres at Guess & Latta Roads`
 const PastLifePage: NextPage<MyProps> = ({ moreinfo }: MyProps ) => {
   return (
     <>
       <Head>
         <title>In a past life | joshuanario.com</title>
         <link rel="shortcut icon" href="/favicon.ico" />
+        <meta name="description" content={tagline} />
+        <meta property='og:type' content='website' />
+        <meta property='og:title' content='Siege on Lochaven Hills' key='title' />
+        <meta property='og:description' content={tagline} key='description' />
+			  <meta property='og:image' content='/sdsf_thumbnail.png' key='image' />
       </Head>
       <PastLife moreinfo={moreinfo} videoUrlMp4='/sdsf_ch09.mp4' videoUrlOgg='/sdsf_ch09.ogg' videoUrlM4v='/sdsf_ch09.m4v'/>
     </>
