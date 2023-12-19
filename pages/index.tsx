@@ -34,6 +34,7 @@ const Home: NextPage = () => {
             <li><MyLink href='pastlife'>In a past life...</MyLink></li>
             <li><MyLink href='wolvesinsheepskin'>wolves in sheepskin</MyLink></li>
             <li><MyLink href='epcs'>EPCS software engineering</MyLink></li>
+            <li><MyLink href='fighting'>On fighting and self-defense</MyLink></li>
           </ul>
       </nav>
     </>
