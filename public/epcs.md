@@ -13,7 +13,7 @@ Generally speaking, electronic healthcare record (EHR) software in the market ty
 
 # Identity Proofing
 
-The latest revision of EPCS codification, [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311), references *Electronic Authentication Guideline* (or [NIST SP 800–63–1](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-63-1.pdf), which as of this writing is superseded by *Digital Identity Guidelines* or [NIST SP 800–63–3](https://pages.nist.gov/800-63-3/sp800-63-3.html)) to describe the requirements around identity proofing.  In a nutshell, it mandates the use of trusted entities that can verify a registered human user (whose enrollment may involve a process like a face-to-face interview) and that can also operate special security token services known as credential service provider (CSP) that can issue security tokens for the human user that have claims pertaining to the level of assurance of the user's digital identity, which are issued in varying levels and types (like IAL and LOA).  Identity proofing solves the problem of impostors crafting fraudulent prescriptions for additive yet legal substances, which are then sold through illicit channels and are used for non-medicinal purposes.  To be able to prescribe medicine would require the person to be registered with the DEA.  This registration is a necessity for the electronic prescription as part of the identity proofing process.
+The latest revision of EPCS codification, [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311), references *Electronic Authentication Guideline* (or [NIST SP 800–63–1](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-63-1.pdf), which as of this writing is superseded by *Digital Identity Guidelines* or [NIST SP 800–63–3](https://pages.nist.gov/800-63-3/sp800-63-3.html)) to describe the requirements around identity proofing.  In a nutshell, it mandates the use of trusted entities that can verify a registered human user (whose enrollment may involve a process like a face-to-face interview) and that can also operate special security token services known as credential service provider (CSP) that can issue security tokens for the human user that have claims pertaining to the level of assurance of the user's digital identity, which are issued in varying levels and types (like IAL and LOA).  Identity proofing solves the problem of impostors crafting fraudulent prescriptions for addictive yet legal substances, which are then sold through illicit channels and are used for non-medicinal purposes.  To be able to prescribe medicine would require the person to be registered with the DEA.  This registration is a necessity for the electronic prescription as part of the identity proofing process.
 
 ```mermaid
 sequenceDiagram
@@ -32,11 +32,11 @@ sequenceDiagram
 
 [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311) requires that a practitioner prescribing electronically must authenticate with the EPCS software using an authentication protocol that uses **two** of the three factors:
 
--  Something only the practitioner knows, such as a password or response to a challenge question.
--  Something the practitioner has, a device (hard token) separate from the computer to which the practitioner is gaining access.
--  Something the practitioner is, biometric data such as a fingerprint or iris scan.
+-  Something only the practitioner knows, such as a password or a correct response to a challenge question.
+-  Something the practitioner has, such as a device (hard token) separate from the computer to which the practitioner is gaining access.
+-  Something the practitioner is, biometric data, such as a fingerprint or iris scan.
 
-Most CSP vendors fulfill this requirement by complementing the username/password (first factor) authentication with an OTP (one-time password) token authentication (second factor).  Some CSP vendors even fingerprint reader capabilities for biometric authentication.  This requirement may also be referred to as the two-factor authentication (2FA).  This requirement strengthens the security around weak or vulnerable credential practices (like re-used passwords or dictionary passwords).
+Most CSP vendors fulfill this requirement by complementing the username/password (first factor) authentication with an OTP (one-time password) token authentication (second factor).  Some CSP vendors even offer fingerprint reader capabilities for biometric authentication.  This requirement may also be referred to as the two-factor authentication (2FA).  This requirement strengthens the security around weak or vulnerable credential practices (like re-used passwords or dictionary passwords).
 
 # Digital Signature
 
@@ -64,4 +64,4 @@ Learn more about reference monitor [here](https://csrc.nist.gov/glossary/term/re
 
 # Auditing
 
-Record tracking of specific events pertaining to the authentication and digital signing activities are required as stated in [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311).  These records must be kept for at least two years.  Also, certain audit events are tracked as "incidents" that must be reported on daily basis. [Reference](https://www.ecfr.gov/current/title-21/part-1311#p-1311.215(b))  In the event that a practitioner has to be investigated for overprescription or fraudulent prescriptions, the audit trails will come in handy once for the DEA.
+Record tracking of specific events pertaining to the authentication and digital signing activities are required as stated in [21 CFR 1311](https://www.ecfr.gov/current/title-21/chapter-II/part-1311).  These records must be kept for at least two years.  Also, certain audit events are tracked as "incidents" that must be reported on daily basis. [Reference](https://www.ecfr.gov/current/title-21/part-1311#p-1311.215(b))  In the event that a practitioner has to be investigated for overprescription or fraudulent prescriptions, the audit trails will come in handy for the DEA.
