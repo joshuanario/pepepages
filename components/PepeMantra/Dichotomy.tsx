@@ -10,7 +10,7 @@ type Props = {
     firstText: string,
     secondText: string,
     mountingClass: string,
-    animatingClass: string
+    animatingClass: string,
 }
 
 export default class Dichotomy extends React.Component<Props, State> {
@@ -75,9 +75,7 @@ export default class Dichotomy extends React.Component<Props, State> {
     render() {
         const className = this.state.isMounting ? this.props.mountingClass : this.state.isAnimating ? this.props.animatingClass : ""
 
-        return (
-            <span className={className} onMouseEnter={this.onEnter} onTouchEnd={this.onTouch}>{this.state.text}</span>
-        )
+        return <span className={className} onMouseEnter={this.onEnter} onTouchEnd={this.onTouch}>{this.state.text}</span>
     }
 }
   

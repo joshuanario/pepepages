@@ -84,7 +84,9 @@ Do not use a single value of $f$.  Either do one of the following:
 1.  Gather averages of $f$ and do a scalar comparison of the averages.
 1.  With multiple values to compare from multiple benchmark trials, run hypothesis tests. (see hypothesis test below)
 
-Note frequently visited and very critical systems should have failure rates less than $1\mathrm{e}{-4}$.  Otherwise, $1\mathrm{e}{-3}$ is a good starting point.
+Note that frequently visited and very critical systems should have failure rates less than $1\mathrm{e}{-4}$.  Otherwise, $1\mathrm{e}{-3}$ is a good starting point.  Ideally, the failure rate should be less than $5\mathrm{e}{-6}$, which coincides with the idea of *six sigma* where the success rate is "five nines and a half" (or $0.999995$ in decimal notation, which aligns to the concept of having no more than $3.4$ defects in a million).
+
+(Lookup Motorola's "Six Sigma Methodology")
 
 # Web Server Soak Test
 
