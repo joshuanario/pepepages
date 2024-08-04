@@ -12,7 +12,7 @@
     "@mermaid-js/mermaid-cli": "8.13",
     "canvas": "^2.11.0",
     "mammoth": "^1.4.21",
-    "next": "12.1.5",
+    "next": "14.1.1",
     "normalize.css": "^8.0.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
