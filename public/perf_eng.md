@@ -75,7 +75,7 @@ Figure: Computer program for web server benchmark results rendering
 
 ### Compare Fourier Analysis Results
 
-Simply do a scalar comparison of the rms values of the two spectral densities to see which one is more performant.  Visually inspecting the spectral density is also a must.  Note datapoints at low load but with high latencies are likely to be operating at the "cold" states of the system while a consitent band spanning the middle zone is most likely operating at the "warm" state.  If there are multiple values to compare from multiple benchmark trials, run hypothesis tests. (see hypothesis test below)
+Simply do a scalar comparison of the rms values of the two spectral densities to see which one is more performant.  Visually inspecting the spectral density is also a must.  Note datapoints at low load but with high latencies are likely to be operating at the "cold" states of the system while a consistent band spanning the middle zone is most likely operating at the "warm" state.  If there are multiple values to compare from multiple benchmark trials, run hypothesis tests. (see hypothesis test below)
 
 ### Compare Poisson Analysis Results
 
@@ -236,7 +236,7 @@ Here are the Python functions that I used for these test:
 Generally, it's a choice between Student's t-test and Mann-Whitney U-test.  I really like Student's work in statistics.  I'm not a big fan of Welch's t-test, so I covered for Student's homogeneity requirement with Levene's test.  Note that we are treating these samples (assuming these datapoints are benchmark results) as unpaired samples (aka independent).
 The following are commonly computed:
 
-*   Sample size of a and
+*   Sample size of a and b
 *   Mean of a and b
 *   Standard deviation of a and b
 *   Median of a and b
@@ -296,7 +296,7 @@ The residuals' satisfaction of the conditions of the Gauss-Markov Theorem determ
 
 1.  $ Cov(r_{i}, r_{j}) = 0, \forall i \neq j$: - _Independence of error_ - This condition is a strict requirement.  There must be no correlation among the residuals.  If this condition is not met, then the benchmark comparison is inconclusive.  There is a naive algorithm to compute the covariance matrix.  In the Python programming language, there is a package called `numpy` with a function called `cov`, which uses the naive algorithm to compute the covariance matrix. Then, do a one-sample hypothesis test where the target is zero and the samples are the entries outside of the main diagonal of the covariance matrix.  (See one sample hypothesis test.)
 2.  For all $i$, $ Var(r_{i}) = \sigma^{2} \lt \infty $. - _Homoscedasticity of error_ - This condition is also a must.  This is the homoscedasticity requirement, or finite variance requirement.  If this requirement is not met, then the benchmark comparison is inconclusive.  The numerical way to test this is using Breusch–Pagan test.  In the Python programming language, there is a package called `scipy.stats.chi2` with a function called `sf`, which can be used to do a chi-squared test in a Breusch–Pagan test where the number of observations is $n$, ${\chi}^2$ is $R^2$ of the linear regresion of the residuals, and the _degrees of freedom_ is $1$ because there's only one predictor, the stimulus or load.
-3.  $ E[r] = k $: - _Expected error_ - If $k$ is zero, then there is no difference in the benchmarks. Or, there is no anticipated performance impact between the two builds of the computer systems.  Else, there is a difference between the benchmarks.  A negative expected value of residuals means the fitted values are generally have a higher value than the observed values.  A positive expected value of residuals means that the observed values are generally larger values from the fitted values.  Note, the Markov amendment to Gauss' original theorem removed the normality requirement so running a D'Agostino $K^2$ test on the residuals is not needed.  In the Python programming language, there is a package called `numpy` with a function called `mean`, which calculates the mean (aka the expected value).
+3.  $ E[r] = k $: - _Expected error_ - If $k$ is zero, then there is no difference in the benchmarks. Or, there is no anticipated performance impact between the two builds of the computer systems.  Else, there is a difference between the benchmarks.  A negative expected value of residuals means the fitted values generally have a higher value than the observed values.  A positive expected value of residuals means that the observed values are generally larger values from the fitted values.  Note, the Markov amendment to Gauss' original theorem removed the normality requirement so running a D'Agostino $K^2$ test on the residuals is not needed.  In the Python programming language, there is a package called `numpy` with a function called `mean`, which calculates the mean (aka the expected value).
 
 # Timing Metrics
 

@@ -35,13 +35,14 @@
 }
 
 #content a{
-  color: yellow;
+  color: #000c6a;
   font-style: italic;
 }
 
 #content a:hover{
-  color: yellowgreen;
+  color: #000c6a;
   font-style: oblique;
+  font-weight: bolder;
   cursor: pointer;
 }
 
