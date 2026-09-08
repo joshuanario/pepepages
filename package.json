@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "mkdir -p _mmd && mmdc -i public/perf_eng.md -o _mmd/perf_eng.md && mmdc -i public/epcs.md -o _mmd/epcs.md && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-cli": "11.17.0",
+    "@mermaid-js/mermaid-cli": "^11.17.0",
     "canvas": "^3.2.3",
     "mammoth": "^1.12.2",
     "next": "16.3.4",
@@ -19,11 +19,9 @@
     "react-dom": "19.2.8",
     "rehype-mathjax": "^7.1.0",
     "rehype-stringify": "^10.0.1",
-    "remark": "15.0.1",
     "remark-embed-images": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
-    "remark-mermaid": "^0.2.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "to-vfile": "^8.0.0",
