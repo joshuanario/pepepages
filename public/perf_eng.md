@@ -41,8 +41,7 @@ Figure: Computer program for web server benchmark results rendering
     $$
     lt = d
     $$
-    where $l$ is rated load, $t$ is the benchmark duration, and $d$ is the disk space.
-    Also, the disk should be fast within 3,000 IOPS on average or the average IOPS is at least three times the rated load.
+    where $l$ is rated load, $t$ is the benchmark duration, and $d$ is the disk space.  Also, the disk should be fast within 3,000 IOPS on average or the average IOPS is at least three times the rated load.
 
 1.  Second, create the computer program for the web server benchmark results rendering.  The computer program must produce the following results:
     *   Fourier analysis of response times for each desired percentiles that can generate its spectral density and root-mean-square (RMS) as Parseval's theorem makes this computation possible.  The computation can be simplified as noted below.
