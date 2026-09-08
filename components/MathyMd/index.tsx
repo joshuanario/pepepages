@@ -6,7 +6,7 @@ type MyProps = {
   content: string
 }
 
-const Resume: React.FC<MyProps> = (props: MyProps) => {
+const MathyMd: React.FC<MyProps> = (props: MyProps) => {
   const { content, } = props
   return <div
     id={styles.container}
@@ -24,4 +24,4 @@ const Resume: React.FC<MyProps> = (props: MyProps) => {
   </div>
 }
 
-export default Resume
+export default MathyMd
